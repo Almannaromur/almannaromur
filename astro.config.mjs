@@ -13,14 +13,18 @@ const redirectList = JSON.parse(
   readFileSync(new URL('./src/data/redirects.json', import.meta.url), 'utf8'),
 );
 
-// Many old URLs contain Icelandic characters. Browsers send those percent-encoded,
-// so register each such URL in both its readable and its encoded form.
+// Many old URLs contain Icelandic characters. Browsers send those percent-encoded
+// (%C3%BE), a few tools write the codes in lower case (%c3%be), and some send the
+// letters as they are, so register each such URL in all three forms.
 /** @type {Record<string, string>} */
 const redirects = {};
 for (const [from, to] of Object.entries(redirectList)) {
   redirects[from] = to;
   const encoded = encodeURI(from);
-  if (encoded !== from) redirects[encoded] = to;
+  if (encoded !== from) {
+    redirects[encoded] = to;
+    redirects[encoded.replace(/%[0-9A-F]{2}/g, (code) => code.toLowerCase())] = to;
+  }
 }
 
 // https://astro.build/config

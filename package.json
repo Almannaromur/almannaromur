@@ -12,7 +12,8 @@
     "check": "astro check",
     "setup:wasm": "node scripts/install-wasm-fallback.mjs",
     "astro": "astro",
-    "check:content": "node scripts/check-markdoc.mjs"
+    "check:content": "node scripts/check-markdoc.mjs",
+    "check:redirects": "node scripts/check-redirects.mjs"
   },
   "dependencies": {
     "@astrojs/markdoc": "^2.1.4",

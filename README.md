@@ -26,7 +26,7 @@ Node 22.23 or newer. If Astro fails to start on Windows with "An Application Con
 | Contact details, newsletter endpoint | `src/data/site.ts` |
 | Design tokens and text styles (from Figma) | `src/styles/global.css` |
 | Components, one per Figma component | `src/components/` |
-| Logos | `src/assets/brand/symbol.svg`, `wordmark.svg`; add `symbol-en.svg` / `wordmark-en.svg` for an English version |
+| Logos | `src/assets/brand/symbol.svg`, `wordmark.svg`; `wordmark-en.svg` is the English logo (Almannarómur with "AI Iceland"), shown in the header and footer of the English pages |
 | Old Framer URLs → new URLs | `src/data/redirects.json` |
 | Downloadable files (PDFs) | `public/skra/` |
 
@@ -43,6 +43,17 @@ The English text is the professional translation received in November 2026, word
 ## Links
 
 A link to another website opens in a new tab; a link within the site stays in the same tab. This is automatic for links written in articles and project pages (`markdoc.config.mjs`). In components, use `externalLinkAttrs(href)` from `src/lib/links.ts`.
+
+## Old addresses
+
+Addresses of the old Framer site that changed are redirected (`src/data/redirects.json`); most of them held Icelandic letters and now use plain ones. `scripts/old-urls.json` lists every address the old site had on 13 November 2026 (its sitemap and every internal link).
+
+```sh
+npm run build && npm run check:redirects                       # checks the build output
+npm run check:redirects -- https://your-preview.vercel.app     # checks a deployed site
+```
+
+Run the second form against the Vercel preview before switching DNS. In Vercel, add both `almannaromur.is` and `www.almannaromur.is` to the project and let one redirect to the other.
 
 ## Keystatic
 
