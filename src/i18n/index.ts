@@ -26,9 +26,9 @@ export const otherLocale = (locale: Locale): Locale => (locale === 'is' ? 'en' :
 const ui = {
   is: {
     siteName: 'Almannarómur',
-    siteTagline: 'Miðstöð máltækni og gervigreindar',
+    siteTagline: 'Miðstöð gervigreindar og máltækni',
     siteDescription:
-      'Almannarómur er miðstöð máltækni og gervigreindar. Við sækjum fram fyrir Ísland í stafrænum heimi svo að samfélagið okkar geti fullnýtt tækifæri tækninnar á eigin forsendum.',
+      'Almannarómur er miðstöð gervigreindar og máltækni. Við sækjum fram fyrir Ísland í stafrænum heimi svo að samfélagið okkar geti fullnýtt tækifæri tækninnar á eigin forsendum.',
     skipToContent: 'Fara beint í efni',
     menu: 'Valmynd',
     nav: {
@@ -63,11 +63,12 @@ const ui = {
   // Strings marked "untranslated" are not in that document and stay in Icelandic until they are.
   en: {
     siteName: 'Almannarómur',
-    // The translator's name for the organisation, taken from the homepage text.
-    siteTagline: 'Center for Language Technology and Artificial Intelligence',
-    // The homepage introduction, word for word.
+    // The organisation's description from the homepage text. Almannarómur asked for "Artificial
+    // Intelligence" first; the translator had "Language Technology" first.
+    siteTagline: 'Center for Artificial Intelligence and Language Technology',
+    // The homepage introduction, with the same change of order.
     siteDescription:
-      "Almannarómur is Iceland's Center for Language Technology and Artificial Intelligence. We make sure Icelandic works in the technology people use every day, and help Iceland put AI to work on its own terms. We are an independent non-profit foundation.",
+      "Almannarómur is Iceland's Center for Artificial Intelligence and Language Technology. We make sure Icelandic works in the technology people use every day, and help Iceland put AI to work on its own terms. We are an independent non-profit foundation.",
     skipToContent: 'Fara beint í efni', // untranslated
     menu: 'Valmynd', // untranslated
     nav: {

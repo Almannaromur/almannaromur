@@ -25,7 +25,7 @@ export const home: Record<Locale, HomeContent> = {
   is: {
     hero: {
       lines: ['Tölum um', 'framtíðina'],
-      lede: 'Almannarómur, miðstöð máltækni og gervigreindar, sækir fram fyrir Ísland í stafrænum heimi. Almannarómur er óháð sjálfseignarstofnun.',
+      lede: 'Almannarómur, miðstöð gervigreindar og máltækni, sækir fram fyrir Ísland í stafrænum heimi. Almannarómur er óháð sjálfseignarstofnun.',
       cta: 'Lesa meira um okkur',
     },
     report: {
@@ -74,7 +74,7 @@ export const home: Record<Locale, HomeContent> = {
       {
         question: 'Hvað er Almannarómur?',
         answer: [
-          'Almannarómur er miðstöð máltækni og gervigreindar, stofnuð 2014. Almannarómur, sem er óháð sjálfseignastofnun, er fjármögnuð af rekstrarsamningi við menningar-, nýsköpunar og háskólaráðuneytið og með styrkjum tengdum Evrópuverkefnum. Miðstöðin heldur um framkvæmd máltækniáætlunar en sinnir einnig fjölbreyttum verkefnum sem snúa að stuðningi við ábyrga þróun og hagnýtingu gervigreindar og máltækni á Íslandi.',
+          'Almannarómur er miðstöð gervigreindar og máltækni, stofnuð 2014. Almannarómur, sem er óháð sjálfseignastofnun, er fjármögnuð af rekstrarsamningi við menningar-, nýsköpunar og háskólaráðuneytið og með styrkjum tengdum Evrópuverkefnum. Miðstöðin heldur um framkvæmd máltækniáætlunar en sinnir einnig fjölbreyttum verkefnum sem snúa að stuðningi við ábyrga þróun og hagnýtingu gervigreindar og máltækni á Íslandi.',
         ],
       },
       {
@@ -112,11 +112,12 @@ export const home: Record<Locale, HomeContent> = {
     ],
   },
 
-  // English: the professional translation (is-to-en, November 2026), word for word.
+  // English: the professional translation (is-to-en, November 2026), word for word, except that
+  // "Artificial Intelligence" now comes before "Language Technology" in the description (Almannarómur's wish).
   en: {
     hero: {
       lines: ['The Future Is', 'Worth Talking About'],
-      lede: "Almannarómur is Iceland's Center for Language Technology and Artificial Intelligence. We make sure Icelandic works in the technology people use every day, and help Iceland put AI to work on its own terms. We are an independent non-profit foundation.",
+      lede: "Almannarómur is Iceland's Center for Artificial Intelligence and Language Technology. We make sure Icelandic works in the technology people use every day, and help Iceland put AI to work on its own terms. We are an independent non-profit foundation.",
       cta: 'Read more about our work',
     },
     report: {
@@ -165,7 +166,7 @@ export const home: Record<Locale, HomeContent> = {
       {
         question: 'What is Almannarómur?',
         answer: [
-          "Almannarómur is Iceland's Center for Language Technology and Artificial Intelligence, founded in 2014. It is an independent non-profit foundation, funded through the national budget and by grants linked to European projects. Among other responsibilities, the center runs the national Language Technology Programme. It also helps build AI infrastructure, supports innovation, and helps businesses adopt AI and put it to practical use.",
+          "Almannarómur is Iceland's Center for Artificial Intelligence and Language Technology, founded in 2014. It is an independent non-profit foundation, funded through the national budget and by grants linked to European projects. Among other responsibilities, the center runs the national Language Technology Programme. It also helps build AI infrastructure, supports innovation, and helps businesses adopt AI and put it to practical use.",
         ],
       },
       {
