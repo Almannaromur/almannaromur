@@ -1,8 +1,9 @@
 ---
 /**
  * Figma: AR / Brand symbol and AR / Full wordmark.
- * A language-specific file wins when it exists: add `symbol-en.svg` or
- * `wordmark-en.svg` to src/assets/brand/ to give the English site its own logo.
+ * A language-specific file wins when it exists: `wordmark-en.svg` is the English
+ * logo ("Almannarómur | AI Iceland"), which is about six times as wide as it is tall.
+ * The header and footer size it separately from the Icelandic one.
  */
 import { useTranslations, type Locale } from '../i18n';
 
@@ -17,6 +18,8 @@ const t = useTranslations(locale);
 
 const files = import.meta.glob<{ default: ImageMetadata }>('../assets/brand/*.svg', { eager: true });
 const logo = (files[`../assets/brand/${kind}-${locale}.svg`] ?? files[`../assets/brand/${kind}.svg`]).default;
+// What the logo itself says, for screen readers.
+const alt = kind === 'wordmark' && locale === 'en' ? `${t.siteName} | AI Iceland` : t.siteName;
 ---
 
-<img src={logo.src} width={logo.width} height={logo.height} alt={t.siteName} class={className} />
+<img src={logo.src} width={logo.width} height={logo.height} alt={alt} class={className} />
