@@ -1,0 +1,56 @@
+---
+/**
+ * Figma: AR / Action. Links and calls to action.
+ *   text    label + arrow; a hairline appears under it on hover, as on the old site
+ *   filled  brown button
+ *   outline bordered button
+ * Renders an <a> when `href` is given, otherwise a <button>.
+ * A link to another website opens in a new tab.
+ */
+import arrow from '../assets/icons/arrow-right.svg';
+import { externalLinkAttrs } from '../lib/links';
+
+interface Props {
+  variant?: 'text' | 'filled' | 'outline';
+  href?: string;
+  type?: 'button' | 'submit';
+  /** Let a long label wrap, keeping the arrow at the far end (Figma "Text wrap"). */
+  wrap?: boolean;
+  /** Decorative only: the surrounding card is the link. */
+  inert?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { variant = 'text', href, type = 'button', wrap = false, inert = false, class: className, ...rest } = Astro.props;
+const Tag = inert ? 'span' : href ? 'a' : 'button';
+
+const base = 'type-label-20 inline-flex items-center gap-3 text-brown transition-colors disabled:opacity-40';
+const variants = {
+  text: 'action-text',
+  filled: 'rounded-control bg-brown px-4 py-3 text-canvas hover:opacity-90',
+  outline: 'rounded-control border border-brown px-4 py-3 hover:bg-yellow',
+};
+---
+
+<Tag
+  href={Tag === 'a' ? href : undefined}
+  {...Tag === 'a' ? externalLinkAttrs(href) : {}}
+  type={Tag === 'button' ? type : undefined}
+  aria-hidden={inert ? 'true' : undefined}
+  class:list={[base, variants[variant], wrap ? 'w-full justify-between text-left' : 'whitespace-nowrap', className]}
+  {...rest}
+>
+  <span class:list={[wrap && 'min-w-0 flex-1']}><slot /></span>
+  {
+    variant === 'text' && (
+      <img
+        src={arrow.src}
+        alt=""
+        width="20"
+        height="20"
+        class="size-5 shrink-0"
+      />
+    )
+  }
+</Tag>

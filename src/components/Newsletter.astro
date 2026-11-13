@@ -1,0 +1,63 @@
+---
+/**
+ * Figma: AR / Newsletter with AR / Email field.
+ * Heading top-left, form bottom-right on desktop; stacked on mobile. The
+ * email field and button stay on one line at every width.
+ *
+ * The form posts to the provider endpoint in src/data/site.ts
+ * (site.newsletter.action). Until that is set the button is disabled.
+ */
+import artwork from '../assets/images/ui/newsletter.png';
+import { site } from '../data/site';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  heading: string;
+}
+
+const { locale, heading } = Astro.props;
+const t = useTranslations(locale);
+const { action, emailField } = site.newsletter;
+const fieldId = 'newsletter-email';
+---
+
+<section class="page-frame">
+  <div
+    class="relative flex min-h-[434px] flex-col justify-between gap-10 rounded-card py-[30px] pl-[26px] pr-[25px] sm:min-h-[327px] sm:items-end sm:pb-[33px] sm:pl-[42px] sm:pr-[33px] sm:pt-14"
+  >
+    <img
+      src={artwork.src}
+      alt=""
+      loading="lazy"
+      class="pointer-events-none absolute inset-0 size-full rounded-card object-cover"
+    />
+    <h2 class="type-heading-36 relative max-w-[182px] sm:w-full sm:max-w-none">{heading}</h2>
+    <form
+      action={action || undefined}
+      method="post"
+      target="_blank"
+      class="relative flex w-full flex-col gap-2.5 sm:w-[550px]"
+    >
+      <label for={fieldId} class="type-heading-24">{t.newsletterHeading}:</label>
+      <div class="flex h-[48.5px] items-stretch gap-2.5">
+        <input
+          id={fieldId}
+          type="email"
+          name={emailField}
+          required
+          autocomplete="email"
+          placeholder={t.newsletterEmail}
+          class="min-w-0 flex-1 rounded-control border border-brown bg-transparent p-3 text-base leading-[18.5px] text-brown placeholder:text-brown focus:bg-canvas focus:outline-2 focus:outline-brown"
+        />
+        <button
+          type="submit"
+          disabled={!action}
+          class="shrink-0 cursor-pointer rounded-control bg-brown p-[15px] text-base leading-[18.5px] text-canvas transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          {t.newsletterSubmit}
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

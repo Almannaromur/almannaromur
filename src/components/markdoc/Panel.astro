@@ -1,0 +1,17 @@
+---
+/**
+ * Markdoc tag {% panel heading="…" %} … {% /panel %}: a pale blue box with a
+ * bold first line. A table inside it is laid out as on the old site: name and
+ * description on the left, the amount on the right.
+ */
+interface Props {
+  heading?: string;
+}
+
+const { heading } = Astro.props;
+---
+
+<div class="prose-panel">
+  {heading && <p class="prose-panel-heading">{heading}</p>}
+  <slot />
+</div>

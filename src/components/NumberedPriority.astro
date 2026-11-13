@@ -1,0 +1,19 @@
+---
+/** Figma: AR / Numbered priority. Small faded number, 24px text and a rule underneath. */
+interface Props {
+  items: readonly string[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol>
+  {
+    items.map((text, i) => (
+      <li class="flex items-start gap-2.5 border-b border-rule py-[42px] first:pt-0">
+        <span class="w-[17px] shrink-0 text-sm leading-[26px] opacity-50">{String(i + 1).padStart(2, '0')}</span>
+        <span class="type-body-24 min-w-0 flex-1">{text}</span>
+      </li>
+    ))
+  }
+</ol>

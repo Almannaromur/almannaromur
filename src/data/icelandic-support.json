@@ -1,0 +1,368 @@
+[
+  {
+    "company": "Apple Inc.",
+    "icon": "apple",
+    "products": [
+      {
+        "name": "Dictation",
+        "category": "Tal í texta",
+        "description": "Innbyggð lausn til að skrifa með rödd í tölvum og símum, hentug fyrir hraðari innslátt og aðgengi.",
+        "rating": 1
+      },
+      {
+        "name": "iOS",
+        "category": "Stýrikerfi",
+        "description": "Stýrikerfi fyrir iPhone og iPad sem almenningur notar í daglegum samskiptum, vinnu og við afþreyingu.",
+        "rating": 2
+      },
+      {
+        "name": "MacOS",
+        "category": "Stýrikerfi",
+        "description": "Stýrikerfi fyrir Mac-tölvur sem notað er í daglegri vinnu, sköpun og skrifstofuumhverfi.",
+        "rating": 2
+      },
+      {
+        "name": "Siri",
+        "category": "Raddaðstoðarmaður",
+        "description": "Raddaðstoðarmaður fyrir skipanir, leit og einföld verkefni á Apple-tækjum.",
+        "rating": 1
+      },
+      {
+        "name": "Translate",
+        "category": "Þýðingarvél",
+        "description": "Innbyggt þýðingarforrit fyrir texta og samtöl, ætlað ferðalögum og daglegri samskiptanotkun.",
+        "rating": 1
+      },
+      {
+        "name": "VoiceOver",
+        "category": "Aðgengislausn",
+        "description": "Lausnir fyrir skjálestur, upplestur og aðgengi sem nýtast blindum, sjónskertum og öðrum sem þurfa stuðningsverkfæri.",
+        "rating": 1
+      }
+    ]
+  },
+  {
+    "company": "Meta",
+    "icon": "meta",
+    "products": [
+      {
+        "name": "Facebook",
+        "category": "Samfélagsmiðill",
+        "description": "Samfélagsmiðill fyrir færslur, hópa, viðburði og samskipti almennra notenda og fyrirtækja.",
+        "rating": 3
+      },
+      {
+        "name": "Instagram",
+        "category": "Samfélagsmiðill",
+        "description": "Mynd- og myndbandsmiðill fyrir einstaklinga, höfunda og vörumerki.",
+        "rating": 3
+      },
+      {
+        "name": "Llama",
+        "category": "Mállíkan",
+        "description": "Grunnmállíkön sem þróunarteymi og fyrirtæki geta byggt eigin gervigreindarlausnir ofan á.",
+        "rating": 2
+      },
+      {
+        "name": "Messenger",
+        "category": "Skilaboðalausn",
+        "description": "Spjallforrit fyrir einstaklinga og fyrirtæki til beinna samskipta og þjónustu.",
+        "rating": 4
+      },
+      {
+        "name": "Meta AI",
+        "category": "Gervigreindaraðstoðarmaður",
+        "description": "Notendaaðstoðarmaður frá Meta sem svarar spurningum og býr til efni í öppum og á vef.",
+        "rating": 2
+      },
+      {
+        "name": "SeamlessM4T",
+        "category": "Fjöltyngd tal- og þýðingarlausn",
+        "description": "Rannsóknar- og innviðalausn fyrir tal í texta, texta í tal og þýðingar milli miðla og tungumála.",
+        "rating": 2
+      },
+      {
+        "name": "VoiceOver",
+        "category": "Aðgengislausn",
+        "description": "Lausnir fyrir skjálestur, upplestur og aðgengi sem nýtast blindum, sjónskertum og öðrum sem þurfa stuðningsverkfæri.",
+        "rating": 1
+      },
+      {
+        "name": "WhatsApp",
+        "category": "Skilaboðalausn",
+        "description": "Samskiptaforrit fyrir skilaboð, símtöl og hópa hjá einstaklingum og litlum teymum.",
+        "rating": 4
+      }
+    ]
+  },
+  {
+    "company": "Google",
+    "icon": "google",
+    "products": [
+      {
+        "name": "Android",
+        "category": "Stýrikerfi",
+        "description": "Stýrikerfi fyrir síma og spjaldtölvur.",
+        "rating": 5
+      },
+      {
+        "name": "Chrome live caption",
+        "category": "Aðgengis- og þýðingarlausn",
+        "description": "Býr til skjátexta og getur þýtt hljóðefni í Chrome, gagnlegt fyrir notendur sem vilja fylgjast með myndböndum, fundum og hlaðvörpum.",
+        "rating": 2
+      },
+      {
+        "name": "Gemini",
+        "category": "Stórt mállíkan",
+        "description": "Risamállíkan til almennra nota.",
+        "rating": 5
+      },
+      {
+        "name": "Google Cloud Speech-to-Text",
+        "category": "Tal í texta",
+        "description": "API-lausn fyrir þróunarteymi sem vilja umrita símtöl, upptökur og annað hljóð yfir í texta.",
+        "rating": 4
+      },
+      {
+        "name": "Google Cloud Text-to-Speech",
+        "category": "Texti í tal",
+        "description": "API-lausn sem les texta upp með vélröddum, hentug í öpp, þjónustur og aðgengislausnir.",
+        "rating": 4
+      },
+      {
+        "name": "Google Maps",
+        "category": "Korta- og leiðsögulausn",
+        "description": "Kort, staðaleit og leiðsögn fyrir almenning, ferðalög og staðbundna þjónustu.",
+        "rating": 3
+      },
+      {
+        "name": "Google Search",
+        "category": "Leitarvél",
+        "description": "Leitarvél fyrir almenna notendur, fjölmiðla, nemendur og starfsfólk sem þarf að finna upplýsingar hratt.",
+        "rating": 4
+      },
+      {
+        "name": "Google Translate",
+        "category": "Þýðingarvél",
+        "description": "Þýðingarþjónusta fyrir texta, skjöl og vefsíður sem einstaklingar og fyrirtæki nota til að skilja efni á milli tungumála.",
+        "rating": 4
+      },
+      {
+        "name": "Google Workspace / Docs",
+        "category": "Vinnusvæði og ritvinnsla",
+        "description": "Skjala-, póst- og samstarfslausnir fyrir teymi, skóla og fyrirtæki.",
+        "rating": 4
+      },
+      {
+        "name": "Live Transcribe",
+        "category": "Tal í texta",
+        "description": "Aðgengislausn sem breytir töluðu máli í texta í rauntíma fyrir fundi og samtöl.",
+        "rating": 3
+      },
+      {
+        "name": "Voice Access",
+        "category": "Raddstýring",
+        "description": "Aðgengislausn sem leyfir notendum að stjórna tæki með rödd. Gagnlegt fyrir hreyfihamlaða og handfrjálsa notkun.",
+        "rating": 2
+      },
+      {
+        "name": "YouTube",
+        "category": "Myndbandsvettvangur",
+        "description": "Myndbandsvettvangur fyrir áhorf, útgáfu og fræðslu fyrir almenning, höfunda og fyrirtæki.",
+        "rating": 2
+      }
+    ]
+  },
+  {
+    "company": "OpenAI",
+    "icon": "openai",
+    "products": [
+      {
+        "name": "ChatGPT",
+        "category": "Mállíkan",
+        "description": "Spjalllausn fyrir skrif, samantektir, hugmyndavinnu, greiningu og aðstoð í daglegri vinnu.",
+        "rating": 4
+      },
+      {
+        "name": "Text to Speech",
+        "category": "Texti í tal",
+        "description": "Raddlausnir fyrir upplestur og samtöl með rödd í öppum og þjónustum.",
+        "rating": 3
+      },
+      {
+        "name": "Whisper",
+        "category": "Tal í texta",
+        "description": "Talgreiningarlíkan sem þróunarteymi geta notað til að umrita hljóð og tal yfir í texta.",
+        "rating": 4
+      }
+    ]
+  },
+  {
+    "company": "Microsoft",
+    "icon": "microsoft",
+    "products": [
+      {
+        "name": "Azure AI Language",
+        "category": "Textagreining",
+        "description": "API-lausn fyrir textagreiningu, flokkun og úrvinnslu fyrir þróunarteymi og stofnanir.",
+        "rating": 3
+      },
+      {
+        "name": "Azure Speech",
+        "category": "Tal í texta / Texti í tal",
+        "description": "API-lausn fyrir raddlausnir, þýðingar, umritun og upplestur í öppum, þjónustuverum og stafrænum vörum.",
+        "rating": 5
+      },
+      {
+        "name": "Copilot",
+        "category": "Gervigreindaraðstoðarmaður",
+        "description": "Aðstoðarmaður fyrir leit, skrif, samantektir og vinnu í Microsoft-umhverfi fyrir einstaklinga og fyrirtæki.",
+        "rating": 3
+      },
+      {
+        "name": "Microsoft 365 / Office / Outlook",
+        "category": "Ritvinnsla og tölvupóstar",
+        "description": "Ritvinnslutól fyrir texta, skjöl og tölvupóstþjónusta Microsoft.",
+        "rating": 4
+      },
+      {
+        "name": "Microsoft Translator",
+        "category": "Þýðingarvél",
+        "description": "Þýðingarþjónusta fyrir texta og skjöl sem nýtist í vefum, öppum og vinnuflæði fyrirtækja.",
+        "rating": 5
+      },
+      {
+        "name": "Teams",
+        "category": "Samskipta- og fundalausn",
+        "description": "Spjall-, síma- og fundalausn fyrir vinnustaði, skóla og verkefnateymi.",
+        "rating": 4
+      },
+      {
+        "name": "Windows",
+        "category": "Stýrikerfi",
+        "description": "Stýrikerfi fyrir tölvur sem einstaklingar, fyrirtæki og stofnanir nota í daglegri vinnu.",
+        "rating": 5
+      }
+    ]
+  },
+  {
+    "company": "Amazon",
+    "icon": "amazon",
+    "products": [
+      {
+        "name": "Alexa",
+        "category": "Raddaðstoðarmaður",
+        "description": "Raddaðstoðarmaður fyrir snjallheimili, fyrirspurnir og raddstýringu í tækjum og öppum.",
+        "rating": 1
+      },
+      {
+        "name": "Amazon Lex",
+        "category": "Spjall- og raddvél",
+        "description": "Lausn fyrir spjallmenni og raddviðmót sem fyrirtæki nota í þjónustuverum og sjálfvirknilausnum.",
+        "rating": 3
+      },
+      {
+        "name": "Amazon Polly",
+        "category": "Texti í tal",
+        "description": "Lausn sem les texta upp með vélröddum fyrir öpp, símsvörun, upplestur og aðgengi.",
+        "rating": 4
+      },
+      {
+        "name": "Amazon Transcribe",
+        "category": "Tal í texta",
+        "description": "Lausn sem breytir tali í texta fyrir símtöl, upptökur og greiningu á samtölum.",
+        "rating": 3
+      },
+      {
+        "name": "Amazon Translate",
+        "category": "Þýðingarvél",
+        "description": "Þýðingarþjónusta fyrir forrit, vefi og skjöl sem fyrirtæki nota í fjöltyngdu efni.",
+        "rating": 4
+      }
+    ]
+  },
+  {
+    "company": "Anthropic",
+    "icon": "anthropic",
+    "products": [
+      {
+        "name": "Claude",
+        "category": "Mállíkan",
+        "description": "Mállíkan fyrir skrif, samantektir og greiningu.",
+        "rating": 4
+      }
+    ]
+  },
+  {
+    "company": "Aðrar lausnir",
+    "icon": null,
+    "products": [
+      {
+        "name": "DeepL",
+        "category": "Þýðingarvélar",
+        "description": "Þýðingarlausnir fyrir texta, skjöl og upptökur sem einstaklingar og fyrirtæki nota til fjöltyngdra samskipta.",
+        "rating": 2
+      },
+      {
+        "name": "Duolingo",
+        "category": "Tungumálanám",
+        "description": "Forrit fyrir tungumálanám fyrir almenna notendur og nemendur.",
+        "rating": 1
+      },
+      {
+        "name": "ElevenLabs",
+        "category": "Texti í tal / Tal í texta",
+        "description": "Raddtæknilausn fyrir upplestur, talgervingu, umritun og hljóðvinnslu í efnisgerð og vörum.",
+        "rating": 4
+      },
+      {
+        "name": "Le Chat",
+        "category": "Mállíkan",
+        "description": "Mállíkan frá Mistral fyrir leit, skrif og almenna gervigreindarvinnu.",
+        "rating": 3
+      },
+      {
+        "name": "Notion",
+        "category": "Vinnusvæði og skjöl",
+        "description": "Skjala- og verkefnalausn fyrir teymi til að halda utan um glósur, verkefni og gagnasöfn.",
+        "rating": 3
+      },
+      {
+        "name": "Reddit",
+        "category": "Samfélagsmiðill / Umræðuvettvangur",
+        "description": "Umræðuvettvangur fyrir spurningar og reynslusögur.",
+        "rating": 1
+      },
+      {
+        "name": "Slack",
+        "category": "Samskiptaforrit",
+        "description": "Vinnusamskiptalausn fyrir skilaboð, rásir og teymisvinnu.",
+        "rating": 2
+      },
+      {
+        "name": "TikTok",
+        "category": "Samfélagsmiðill",
+        "description": "Myndbandsforrit fyrir almenning og efnishöfunda til að horfa á, búa til og dreifa stuttmyndböndum.",
+        "rating": 4
+      },
+      {
+        "name": "Trello",
+        "category": "Verkefnastjórnun",
+        "description": "Verkefnaborð fyrir teymi og einstaklinga til að skipuleggja verkefni og verkferla.",
+        "rating": 1
+      },
+      {
+        "name": "X / Twitter",
+        "category": "Samfélagsmiðill",
+        "description": "Samfélagsmiðill fyrir stuttar færslur, fréttaflæði og opinbera umræðu.",
+        "rating": 2
+      },
+      {
+        "name": "Zoom",
+        "category": "Fjarfundalausn",
+        "description": "Fjarfundalausn fyrir vinnufundi, kennslu og fjarviðburði.",
+        "rating": 2
+      }
+    ]
+  }
+]

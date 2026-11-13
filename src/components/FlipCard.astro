@@ -1,0 +1,100 @@
+---
+/**
+ * Figma: AR / Solution card and AR / Strategic priority.
+ * A card (590px tall on desktop, 540px on mobile) that turns around its
+ * vertical axis to show its back, as on the old site.
+ *   trigger="click"  turns when clicked or tapped (Lausnir)
+ *   trigger="hover"  turns while the pointer is over it; on touch screens it
+ *                    turns on tap (Um okkur, project pages)
+ * Links on the front stay clickable. The card is also operable from the
+ * keyboard. Without JavaScript both faces are shown, stacked.
+ */
+interface Props {
+  /** What the card is about, for the screen-reader labels of the toggle. */
+  title: string;
+  showLabel: string;
+  hideLabel: string;
+  trigger?: 'click' | 'hover';
+  /** Background and padding of the front face. */
+  frontClass?: string;
+  /** Background and padding of the back face. */
+  backClass?: string;
+  class?: string;
+}
+
+const {
+  title,
+  showLabel,
+  hideLabel,
+  trigger = 'click',
+  frontClass = 'bg-card px-6 pb-6 pt-[42px]',
+  backClass = 'bg-blue p-6',
+  class: className,
+} = Astro.props;
+const backId = `flip-${crypto.randomUUID().slice(0, 8)}`;
+const face = 'flip-face flex flex-col overflow-clip rounded-card border border-rule';
+---
+
+<div class:list={['flip-card', className]} data-flip-card data-flip-trigger={trigger}>
+  <div class="flip-inner">
+    <div class:list={[face, 'flip-front', frontClass]}>
+      <button
+        type="button"
+        class="flip-toggle absolute inset-0 cursor-pointer rounded-card"
+        aria-expanded="false"
+        aria-controls={backId}
+        aria-label={`${showLabel}: ${title}`}
+        data-flip-show></button>
+      <!-- pointer-events: only links sit above the toggle -->
+      <div class="pointer-events-none relative flex flex-1 flex-col [&_a]:pointer-events-auto">
+        <slot name="front" />
+      </div>
+    </div>
+    <div id={backId} class:list={[face, 'flip-back', backClass]}>
+      <button
+        type="button"
+        class="flip-toggle absolute inset-0 cursor-pointer rounded-card"
+        aria-label={`${hideLabel}: ${title}`}
+        data-flip-hide></button>
+      <div class="type-body-20 pointer-events-none relative flex flex-1 flex-col gap-4 [&_a]:pointer-events-auto">
+        <slot name="back" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // With a mouse, "hover" cards are turned by CSS alone; a mouse click must not also latch them.
+  const mouse = window.matchMedia('(hover: hover) and (pointer: fine)');
+  for (const card of document.querySelectorAll<HTMLElement>('[data-flip-card]')) {
+    const show = card.querySelector<HTMLButtonElement>('[data-flip-show]');
+    const hide = card.querySelector<HTMLButtonElement>('[data-flip-hide]');
+    if (!show || !hide) continue;
+    card.classList.add('is-ready');
+    requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('is-animated')));
+    const hover = card.dataset.flipTrigger === 'hover';
+    const set = (flipped: boolean) => {
+      card.classList.toggle('is-flipped', flipped);
+      show.setAttribute('aria-expanded', String(flipped));
+      // Keep keyboard focus on the face that is now visible.
+      (flipped ? hide : show).focus({ preventScroll: true });
+    };
+    // event.detail is 0 for a click made with the keyboard.
+    const byMouseOnHoverCard = (event: MouseEvent) => hover && mouse.matches && event.detail > 0;
+    show.addEventListener('click', (event) => {
+      if (!byMouseOnHoverCard(event)) set(true);
+    });
+    hide.addEventListener('click', (event) => {
+      if (!byMouseOnHoverCard(event)) set(false);
+    });
+    card.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && card.classList.contains('is-flipped')) set(false);
+    });
+    if (hover) {
+      // A card latched by tap or keyboard lets go when the pointer or focus moves on.
+      card.addEventListener('pointerleave', () => {
+        if (mouse.matches && card.classList.contains('is-flipped') && !card.matches(':focus-within')) set(false);
+      });
+    }
+  }
+</script>

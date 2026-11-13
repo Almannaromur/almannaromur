@@ -1,0 +1,98 @@
+---
+/** Figma: 03 · Desktop screens / 05 News. Category filters on the left, results on the right. */
+import Chip from '../../components/Chip.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import PageHero from '../../components/PageHero.astro';
+import { NEWS_CATEGORY_LABELS, useTranslations } from '../../i18n';
+import Base from '../../layouts/Base.astro';
+import { getNews } from '../../lib/content';
+
+const t = useTranslations('is');
+const news = await getNews();
+const categories = Object.entries(NEWS_CATEGORY_LABELS);
+---
+
+<Base
+  locale="is"
+  title={t.nav.news}
+  description="Fréttir, verkefni, viðburðir og útgefið efni frá Almannarómi."
+  current="news"
+  footerGap={120}
+  footerHeight={715}
+>
+  <PageHero lines={[t.nav.news]} wash="blue" top={424} bottom={50} />
+
+  <section class="page-frame">
+    <!--
+      Desktop, as on the old site: category filter in a left column, the list on the right, no
+      hairline under the headline. Phones and tablets: a hairline, the filter in a row, then the list.
+    -->
+    <div class="grid grid-cols-1 border-t border-rule pt-8 md:grid-cols-[460fr_916fr] md:border-t-0 md:pt-0">
+      <!-- Category filter. Without JavaScript the buttons stay hidden and every item is shown. -->
+      <div
+        role="group"
+        aria-label="Sía eftir tegund"
+        data-news-filter
+        hidden
+        class="-ml-0.5 flex flex-wrap content-start items-start gap-[11px] self-start md:pt-12"
+      >
+        <Chip variant="filter" size="md" data-filter="all" aria-pressed="true">{t.newsAll}</Chip>
+        {
+          categories.map(([value, label]) => (
+            <Chip variant="filter" size="md" data-filter={value} aria-pressed="false">
+              {label}
+            </Chip>
+          ))
+        }
+      </div>
+
+      <div class="min-w-0">
+        <div class="flex flex-col" data-news-list>
+          {news.map((entry) => <NewsCard entry={entry} layout="list" />)}
+        </div>
+        <p class="type-body-24 py-10" data-news-empty hidden>{t.newsEmpty}</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const filter = document.querySelector<HTMLElement>('[data-news-filter]');
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-news-card]')];
+  const empty = document.querySelector<HTMLElement>('[data-news-empty]');
+
+  if (filter) {
+    filter.hidden = false;
+    const buttons = [...filter.querySelectorAll<HTMLButtonElement>('button[data-filter]')];
+
+    const apply = (value: string) => {
+      let shown = 0;
+      for (const card of cards) {
+        const match = value === 'all' || card.dataset.category === value;
+        card.hidden = !match;
+        if (match) shown += 1;
+      }
+      for (const button of buttons) {
+        button.setAttribute('aria-pressed', String(button.dataset.filter === value));
+      }
+      if (empty) empty.hidden = shown > 0;
+      // Rows that moved up into view still need their scroll-in (see Base.astro).
+      window.dispatchEvent(new Event('scroll'));
+    };
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        const value = button.dataset.filter ?? 'all';
+        apply(value);
+        // Keep the choice in the URL so a filtered view can be shared.
+        const url = new URL(location.href);
+        if (value === 'all') url.searchParams.delete('tegund');
+        else url.searchParams.set('tegund', value);
+        history.replaceState(null, '', url);
+      });
+    }
+
+    const initial = new URL(location.href).searchParams.get('tegund');
+    if (initial && buttons.some((b) => b.dataset.filter === initial)) apply(initial);
+  }
+</script>

@@ -1,0 +1,72 @@
+---
+/**
+ * Markdoc tag {% ratings /%}: how well Icelandic works in each company's products.
+ * One expandable row per company; inside, one line per product with a 1–5 grade.
+ * Data: src/data/icelandic-support.json (taken from the old site, November 2026).
+ */
+import { Image } from 'astro:assets';
+import chevron from '../../assets/icons/chevron-down.svg';
+import metaLogo from '../../assets/images/logos/meta.png';
+import companies from '../../data/icelandic-support.json';
+import type { Locale } from '../../i18n';
+
+const icons = import.meta.glob<{ default: ImageMetadata }>('../../assets/icons/companies/*.svg', { eager: true });
+const locale = (Astro.currentLocale ?? 'is') as Locale;
+const gradeLabel = 'Einkunn';
+// PLACEHOLDER: this table is not in the professional translation. On the English page the
+// labels stay in Icelandic and each description is placeholder text until it is translated.
+const PLACEHOLDER = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.';
+const describe = (text: string) => (locale === 'en' ? PLACEHOLDER : text);
+
+// Grade colours as on the old site: 1 red, 2 orange, 3 yellow, 4 blue, 5 green.
+const GRADE_COLOURS: Record<number, string> = { 1: '#ff6e6e', 2: '#ffa759', 3: '#f9ec7f', 4: '#b9f2ff', 5: '#a9d1a2' };
+---
+
+<div class="not-prose border-t border-brown">
+  {
+    companies.map((company) => {
+      const icon = company.icon ? icons[`../../assets/icons/companies/${company.icon}.svg`]?.default : undefined;
+      return (
+        <details class="group/rating border-b border-brown">
+          <summary class="type-body-20 flex cursor-pointer list-none items-center gap-4 py-5 [&::-webkit-details-marker]:hidden">
+            <span class="flex size-6 shrink-0 items-center justify-center">
+              {company.icon === 'meta' ? (
+                <Image src={metaLogo} alt="" width={48} class="h-4 w-6 object-contain" />
+              ) : (
+                icon && <img src={icon.src} alt="" class="max-h-6 max-w-6" />
+              )}
+            </span>
+            <span class="min-w-0 flex-1">{company.company}</span>
+            <img
+              src={chevron.src}
+              alt=""
+              width="24"
+              height="24"
+              class="size-6 shrink-0 transition-transform group-open/rating:rotate-180"
+            />
+          </summary>
+          <ul class="flex flex-col gap-8 pb-8 pt-3">
+            {company.products.map((product) => (
+              <li class="grid grid-cols-[1fr_auto] gap-x-6 gap-y-1 md:grid-cols-[152px_1fr_auto]">
+                <p class="font-semibold">{product.name}</p>
+                <div class="col-span-2 row-start-2 text-sm leading-[22px] md:col-span-1 md:row-start-auto">
+                  <p>{product.category}</p>
+                  <p class="mt-1">{describe(product.description)}</p>
+                </div>
+                <p class="flex items-start gap-4 text-sm leading-[22px] md:col-start-3">
+                  <span>{gradeLabel}:</span>
+                  <span
+                    class="inline-flex h-5 w-8 items-center justify-center rounded-pill text-[13px] font-semibold"
+                    style={`background: ${GRADE_COLOURS[product.rating] ?? 'transparent'}`}
+                  >
+                    {product.rating}
+                  </span>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </details>
+      );
+    })
+  }
+</div>

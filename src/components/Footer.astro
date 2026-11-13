@@ -1,0 +1,77 @@
+---
+/**
+ * Figma: AR / Footer (desktop 816px, tablet 717px, mobile 609px).
+ * Contact invitation on the gradient artwork, then social links, a rule and
+ * the wordmark with address and registration number.
+ */
+import facebookIcon from '../assets/icons/facebook.svg';
+import linkedinIcon from '../assets/icons/linkedin.svg';
+import artwork from '../assets/images/footer/desktop.png';
+import Logo from './Logo.astro';
+import { site } from '../data/site';
+import { useTranslations, type Locale } from '../i18n';
+import { externalLinkAttrs } from '../lib/links';
+
+interface Props {
+  locale: Locale;
+  /** Space above the footer at desktop size, in px. */
+  gap?: number;
+  /** Height of the footer at full desktop size, in px (816; the news list has a shorter one). */
+  height?: number;
+}
+
+const { locale, gap = 160, height = 816 } = Astro.props;
+const t = useTranslations(locale);
+const icons: Record<string, ImageMetadata> = { Facebook: facebookIcon, LinkedIn: linkedinIcon };
+---
+
+<!-- The footer rises into place when it scrolls into view; the wrapper clips it until then. -->
+<div class="overflow-clip">
+<footer
+  data-reveal="up"
+  style={`--footer-gap:${gap}px;--footer-h:${height}px`}
+  class="relative mt-24 flex md:mt-[var(--footer-gap)] min-h-[609px] flex-col items-center px-[14px] pb-[25px] pt-[125px] sm:min-h-[717px] sm:pt-[173px] lg:min-h-[var(--footer-h)] lg:px-[30px] lg:pb-[35px] lg:pt-[134px]"
+>
+  <!-- Artwork: cropped on small screens, stretched to the full frame on desktop. -->
+  <img
+    src={artwork.src}
+    alt=""
+    loading="lazy"
+    class="pointer-events-none absolute inset-0 size-full object-cover lg:object-fill"
+  />
+
+  <div class="relative flex w-full max-w-[316px] flex-col gap-6 text-center sm:max-w-[508px]">
+    <h2 class="type-heading-28 sm:type-heading-32">{t.contactHeading}</h2>
+    <p class="type-label-16 font-medium">
+      {t.contactCta} →{' '}
+      <a href={`mailto:${site.email}`} class="underline hover:text-[#43b7d1]">{site.email}</a>
+    </p>
+  </div>
+
+  <div class="min-h-10 flex-1"></div>
+
+  <div class="relative mx-auto flex w-full max-w-[1382px] flex-col gap-6">
+    <ul class="flex justify-end gap-4">
+      {
+        site.social.map((item) => (
+          <li>
+            <a href={item.href} {...externalLinkAttrs(item.href)} aria-label={item.label} class="block size-5">
+              <img src={icons[item.label].src} alt="" width="20" height="20" class="size-5" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="h-px bg-rule"></div>
+    <div class="flex flex-col items-start justify-between sm:flex-row sm:gap-6">
+      <div class="sm:w-[450px]">
+        <Logo locale={locale} kind="wordmark" class="h-9 w-[209px] sm:h-[49px] sm:w-[285px]" />
+      </div>
+      <address class="type-label-16 not-italic sm:w-[220px]">
+        {site.address.map((line) => <span class="block">{line}</span>)}
+      </address>
+      <p class="type-label-16 sm:w-[150px]">{t.idNumber} {site.idNumber}</p>
+    </div>
+  </div>
+</footer>
+</div>

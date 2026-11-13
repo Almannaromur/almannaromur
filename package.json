@@ -1,0 +1,41 @@
+{
+  "name": "almannaromur",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "setup:wasm": "node scripts/install-wasm-fallback.mjs",
+    "astro": "astro",
+    "check:content": "node scripts/check-markdoc.mjs"
+  },
+  "dependencies": {
+    "@astrojs/markdoc": "^2.1.4",
+    "@astrojs/react": "^7.1.8",
+    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/vercel": "^11.0.21",
+    "@fontsource-variable/roboto-serif": "^5.3.0",
+    "@fontsource-variable/space-grotesk": "^5.3.0",
+    "@keystatic/astro": "^6.0.0",
+    "@keystatic/core": "^0.6.9",
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.11",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwindcss": "^4.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "cheerio": "^1.2.0",
+    "turndown": "^7.2.5",
+    "typescript": "^6.0.3"
+  },
+  "private": true
+}

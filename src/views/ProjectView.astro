@@ -1,0 +1,78 @@
+---
+/**
+ * Project page. Layout follows the old site's project pages, in the Figma styles:
+ * yellow hero with the headline and introduction, a wide rounded image, then
+ * the Markdoc body. The `.prose-split` styles place each "##" heading in the
+ * left column with its text on the right; card grids span both columns.
+ * Blocks available in the body are listed in markdoc.config.mjs.
+ */
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import PageHero from '../components/PageHero.astro';
+import { otherLocale, projectPath, type Locale } from '../i18n';
+import Base from '../layouts/Base.astro';
+import { getProjectSlugs, type Project } from '../lib/content';
+
+interface Props {
+  locale: Locale;
+  project: Project;
+}
+
+const { locale, project } = Astro.props;
+const { title, summary, image, heroLines, intro, heroImage, heroBackground } = project.entry.data;
+const { Content } = await render(project.entry);
+const wideImage = heroImage ?? image;
+
+// Space under the headline on desktop: 75px on most project pages of the old site, a little more on two.
+const HERO_BOTTOM: Record<string, number> = { glod: 90, kveikja: 89 };
+
+// Link to the other language only when that project page exists there.
+const other = otherLocale(locale);
+const hasAlternate = (await getProjectSlugs(other)).has(project.slug);
+---
+
+<Base
+  locale={locale}
+  title={title}
+  description={summary}
+  current="projects"
+  alternatePath={hasAlternate ? projectPath(other, project.slug) : null}
+  image={(image ?? heroImage)?.src}
+  footerGap={100}
+>
+  <article>
+    <PageHero
+      lines={heroLines ?? [title]}
+      wash="yellow"
+      align="bottom"
+      bottom={HERO_BOTTOM[project.slug] ?? 75}
+      intro={intro ?? summary}
+    />
+
+    {
+      wideImage && (
+        <div class="page-frame">
+          <div
+            class="flex h-[240px] items-center justify-center overflow-clip rounded-card md:h-[582px]"
+            style={heroBackground ? `background: ${heroBackground}` : undefined}
+          >
+            <Image
+              src={wideImage}
+              alt=""
+              widths={[750, 1400, 2048]}
+              sizes="(min-width: 1440px) 1376px, 100vw"
+              loading="eager"
+              class:list={heroBackground ? 'h-[103%] w-auto max-w-none' : 'size-full object-cover'}
+            />
+          </div>
+        </div>
+      )
+    }
+
+    <div class="page-frame">
+      <div class="prose prose-split">
+        <Content />
+      </div>
+    </div>
+  </article>
+</Base>

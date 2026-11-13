@@ -1,0 +1,22 @@
+---
+/**
+ * Figma: AR / Brand symbol and AR / Full wordmark.
+ * A language-specific file wins when it exists: add `symbol-en.svg` or
+ * `wordmark-en.svg` to src/assets/brand/ to give the English site its own logo.
+ */
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  kind: 'symbol' | 'wordmark';
+  class?: string;
+}
+
+const { locale, kind, class: className } = Astro.props;
+const t = useTranslations(locale);
+
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/brand/*.svg', { eager: true });
+const logo = (files[`../assets/brand/${kind}-${locale}.svg`] ?? files[`../assets/brand/${kind}.svg`]).default;
+---
+
+<img src={logo.src} width={logo.width} height={logo.height} alt={t.siteName} class={className} />

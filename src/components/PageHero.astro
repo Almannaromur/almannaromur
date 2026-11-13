@@ -1,0 +1,61 @@
+---
+/**
+ * Page hero: display headline on the left, optional introduction on the right.
+ * In the design the first headline line is serif and the second is sans.
+ * The wash behind it (and behind the navigation) differs per page:
+ * home blue-yellow, Verkefni and Á döfinni blue, Um okkur and project pages
+ * yellow, the rest plain.
+ */
+interface Props {
+  /** Headline, one entry per line. A soft hyphen (­) marks where a long word may break. */
+  lines: string[];
+  wash?: 'home' | 'blue' | 'yellow' | 'none';
+  /** Space under the headline at desktop size, in px (80 on most pages). */
+  bottom?: number;
+  /** Where the headline starts at desktop size, in px from the top of the page. */
+  top?: number;
+  /** Put both headline lines on one row when there is room ("Lausnir & þjónusta"). */
+  inline?: boolean;
+  /**
+   * `top` (default): the headline starts at a fixed height and longer ones grow downwards.
+   * `bottom`: the hero has a fixed height and the headline sits at its foot, so
+   * whatever follows (the wide image on project pages) always starts at the same place.
+   */
+  align?: 'top' | 'bottom';
+  /** Introduction text. Pass it here (not as a slot) when it may be empty. */
+  intro?: string;
+}
+
+const { lines, wash = 'none', bottom = 80, top = 384, inline = false, align = 'top', intro } = Astro.props;
+const hasIntro = Astro.slots.has('default') || Boolean(intro);
+---
+
+<section
+  class:list={[wash !== 'none' && `hero-wash-${wash}`, align === 'bottom' && 'flex flex-col justify-end md:min-h-[580px]']}
+  style={`--hero-top:${top}px;--hero-bottom:${bottom}px`}
+>
+  <div
+    class:list={[
+      'page-frame',
+      align === 'bottom' ? 'pt-[232px] md:pt-[150px]' : 'pt-[232px] md:pt-[var(--hero-top)]',
+      bottom >= 96 ? 'pb-16 md:pb-[var(--hero-bottom)]' : 'pb-12 md:pb-[var(--hero-bottom)]',
+      hasIntro && 'split items-end',
+    ]}
+  >
+    <h1 class:list={['hyphens-manual', inline && 'lg:flex lg:flex-wrap lg:gap-x-6']}>
+      {
+        lines.map((line, i) => (
+          <span class:list={['block', i === 0 ? 'type-display-serif' : 'type-display-sans']}>{line}</span>
+        ))
+      }
+    </h1>
+    {
+      hasIntro && (
+        <div class="type-body-20 flex flex-col items-start gap-[42px] md:type-body-24">
+          {intro && <p>{intro}</p>}
+          <slot />
+        </div>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,28 @@
+---
+/**
+ * The two-column section used across the inner pages: 48px serif heading on
+ * the left, 24px body copy on the right, 100px above and below.
+ */
+interface Props {
+  heading: string;
+  /** Heading size: 48 on inner pages, 38 and 32 for the homepage variants. */
+  size?: 48 | 38 | 32;
+  id?: string;
+  /** Hairline above the section. */
+  rule?: boolean;
+  /** Fade and slide in when scrolled into view (see [data-reveal] in global.css). */
+  reveal?: boolean;
+}
+
+const { heading, size = 48, id, rule = true, reveal = false } = Astro.props;
+const headingClass = { 48: 'type-heading-48', 38: 'type-heading-38', 32: 'type-heading-32' }[size];
+---
+
+<section id={id} class="page-frame py-12 md:py-[75px]">
+  <div class:list={['split', rule && 'section-rule']} data-reveal={reveal ? 'down' : undefined}>
+    <h2 class={headingClass}>{heading}</h2>
+    <div class="type-body-20 flex min-w-0 flex-col gap-6">
+      <slot />
+    </div>
+  </div>
+</section>

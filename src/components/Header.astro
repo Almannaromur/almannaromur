@@ -1,0 +1,223 @@
+---
+/**
+ * Figma: AR / Navigation (desktop and mobile, closed and open), with
+ * AR / Project dropdown and AR / Menu item.
+ * The header sits on top of the page hero, so it has no background of its own.
+ *
+ * Scroll behaviour, as on the live (Framer) site:
+ *   at the top of the page   transparent bar
+ *   scrolling down           fades out
+ *   scrolling back up        returns as a floating cream card with a border
+ *                            (on phones: returns as it was, with no card)
+ * Without JavaScript the header simply scrolls away with the page.
+ */
+import { Image } from 'astro:assets';
+import closeIcon from '../assets/icons/close.svg';
+import menuIcon from '../assets/icons/menu.svg';
+import technologyArt from '../assets/images/menu/maltaekni-art.svg';
+import Logo from './Logo.astro';
+import { site } from '../data/site';
+import { otherLocale, projectPath, routes, useTranslations, type Locale, type RouteKey } from '../i18n';
+import { getProjects } from '../lib/content';
+import { externalLinkAttrs } from '../lib/links';
+
+interface Props {
+  locale: Locale;
+  current?: RouteKey;
+  /** Where the language switch goes. */
+  switchPath: string;
+}
+
+const { locale, current, switchPath } = Astro.props;
+const t = useTranslations(locale);
+const other = otherLocale(locale);
+
+// Order of the project menu in the design.
+const MENU_ORDER = ['glod', 'kveikja', 'new-nordics', 'thin-islenska', 'skerfur', 'maltaekni', 'unesco', 'islenska'];
+const previews = import.meta.glob<{ default: ImageMetadata }>('../assets/images/menu/*.png', { eager: true });
+
+const projects = (await getProjects(locale))
+  .map(({ slug, entry }) => ({
+    slug,
+    title: entry.data.title,
+    href: projectPath(locale, slug),
+    preview: previews[`../assets/images/menu/${slug}.png`]?.default,
+  }))
+  .sort((a, b) => MENU_ORDER.indexOf(a.slug) - MENU_ORDER.indexOf(b.slug));
+
+const pages = (['solutions', 'news', 'about'] as RouteKey[]).flatMap((key) => {
+  const href = routes[key][locale];
+  return href ? [{ key, href, label: t.nav[key as keyof typeof t.nav] }] : [];
+});
+
+// As on the old site: medium weight, no underline on hover or for the current page.
+const link = 'type-label-16 font-medium';
+const menuRow = 'type-label-16 block w-full rounded-xs px-2 py-1';
+---
+
+<header class="site-header" data-site-header data-state="top">
+  <div class="site-bar relative flex items-center justify-between">
+    <a href={routes.home[locale]} class="shrink-0">
+      <Logo locale={locale} kind="symbol" class="h-12 w-[42px]" />
+    </a>
+
+    <!-- Desktop -->
+    <nav aria-label={t.menu} class="hidden items-center gap-6 md:flex">
+      <!-- Opening, closing and the hover path between the link and the dropdown: see .project-menu in global.css. -->
+      <div class="group/menu relative -my-8 py-8" data-project-menu>
+        <a
+          href={routes.projects[locale]}
+          aria-current={current === 'projects' ? 'page' : undefined}
+          aria-haspopup="true"
+          class={link}
+        >
+          {t.nav.projects}
+        </a>
+        <div
+          class="project-menu absolute -left-[18px] top-[calc(100%-14px)] flex w-[625px] items-start gap-[42px] rounded-card border border-brown bg-canvas px-[21px] py-[19px] drop-shadow-[0_10px_10px_rgb(0_0_0/0.05)]"
+        >
+          <ul class="flex w-[261px] shrink-0 flex-col gap-1.5">
+            {
+              projects.map((project) => (
+                <li>
+                  <a
+                    href={project.href}
+                    data-preview-trigger={project.slug}
+                    class:list={[menuRow, 'hover:bg-blue focus-visible:bg-blue']}
+                  >
+                    {project.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <!-- One preview per project; the hovered row's image is shown. -->
+          <div class="relative h-[273px] min-w-0 flex-1 overflow-clip rounded-card" aria-hidden="true">
+            {
+              projects.map((project) =>
+                project.preview ? (
+                  <Image
+                    src={project.preview}
+                    alt=""
+                    width={560}
+                    loading="lazy"
+                    data-preview={project.slug}
+                    class:list={[
+                      'absolute inset-0 size-full opacity-0 transition-opacity data-[active]:opacity-100',
+                      project.slug === 'skerfur' ? 'object-contain' : 'object-cover',
+                    ]}
+                  />
+                ) : (
+                  project.slug === 'maltaekni' && (
+                    <div
+                      data-preview={project.slug}
+                      class="absolute inset-0 opacity-0 transition-opacity data-[active]:opacity-100"
+                    >
+                      <img
+                        src={technologyArt.src}
+                        alt=""
+                        loading="lazy"
+                        class="absolute inset-[-10.42%_0_-10.1%_-25.71%] block h-[120.52%] w-[125.71%] max-w-none"
+                      />
+                    </div>
+                  )
+                ),
+              )
+            }
+          </div>
+        </div>
+      </div>
+
+      {
+        pages.map((page) => (
+          <a href={page.href} aria-current={current === page.key ? 'page' : undefined} class={link}>
+            {page.label}
+          </a>
+        ))
+      }
+      <a href={switchPath} hreflang={other} lang={other} aria-label={t.switchLanguageLabel} class={link}>
+        {t.switchLanguage}
+      </a>
+      <a
+        href={site.reportUrl}
+        {...externalLinkAttrs(site.reportUrl)}
+        class="type-label-16 rounded-control border border-brown px-2 py-[3px] font-medium"
+      >
+        {t.nav.report}
+      </a>
+    </nav>
+
+    <!-- Mobile: works without JavaScript -->
+    <details class="group/mobile md:hidden">
+      <summary
+        class="block size-7 cursor-pointer list-none [&::-webkit-details-marker]:hidden"
+        aria-label={t.menu}
+      >
+        <img src={menuIcon.src} alt="" width="28" height="28" class="size-7 group-open/mobile:hidden" />
+        <img src={closeIcon.src} alt="" width="28" height="28" class="hidden size-7 group-open/mobile:block" />
+      </summary>
+      <nav
+        aria-label={t.menu}
+        class="absolute inset-x-8 top-[104px] flex flex-col gap-2 rounded-card border border-brown bg-canvas p-4 sm:left-auto sm:w-[340px]"
+      >
+        <a href={routes.projects[locale]} class={menuRow}>{t.nav.projects}</a>
+        <ul class="flex flex-col gap-1.5">
+          {
+            projects.map((project) => (
+              <li>
+                <a href={project.href} class:list={[menuRow, 'pl-6']}>
+                  {project.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        {pages.map((page) => <a href={page.href} class={menuRow}>{page.label}</a>)}
+        <a href={switchPath} hreflang={other} lang={other} class={menuRow}>{t.switchLanguage}</a>
+        <a href={site.reportUrl} {...externalLinkAttrs(site.reportUrl)} class:list={[menuRow, 'rounded-control border border-brown text-center']}>
+          {t.nav.report}
+        </a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<script>
+  // Scroll behaviour: hide while scrolling down, float while scrolling up.
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  if (header) {
+    header.classList.add('is-fixed');
+    let last = Math.max(window.scrollY, 0);
+    const menuOpen = () => header.querySelector('details[open]') !== null || header.matches(':focus-within');
+    const setState = (state: 'top' | 'hidden' | 'floating') => {
+      if (header.dataset.state !== state) header.dataset.state = state;
+    };
+    const update = () => {
+      const y = Math.max(window.scrollY, 0);
+      if (y < 8) setState('top');
+      else if (y > last + 2) setState(menuOpen() ? 'floating' : 'hidden');
+      else if (y < last - 2) setState('floating');
+      last = y;
+    };
+    // A page opened part-way down (anchor link, reload) starts with the bar out of the way.
+    if (last >= 8) setState('hidden');
+    window.addEventListener('scroll', update, { passive: true });
+    // Keyboard focus moving into a hidden header brings it back.
+    header.addEventListener('focusin', () => {
+      if (header.dataset.state === 'hidden') setState('floating');
+    });
+  }
+
+  // Project dropdown: show the preview image that belongs to the hovered or focused row.
+  for (const menu of document.querySelectorAll<HTMLElement>('[data-project-menu]')) {
+    const previews = [...menu.querySelectorAll<HTMLElement>('[data-preview]')];
+    const show = (slug: string | undefined) => {
+      for (const preview of previews) preview.toggleAttribute('data-active', preview.dataset.preview === slug);
+    };
+    for (const trigger of menu.querySelectorAll<HTMLElement>('[data-preview-trigger]')) {
+      const slug = trigger.dataset.previewTrigger;
+      trigger.addEventListener('pointerenter', () => show(slug));
+      trigger.addEventListener('focus', () => show(slug));
+    }
+  }
+</script>

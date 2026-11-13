@@ -1,0 +1,15 @@
+---
+/** Markdoc tag {% button href="…" label="…" /%}: a centred yellow button in the text column. */
+import { externalLinkAttrs } from '../../lib/links';
+
+interface Props {
+  href: string;
+  label: string;
+}
+
+const { href, label } = Astro.props;
+---
+
+<p class="prose-button not-prose">
+  <a href={href} {...externalLinkAttrs(href)}>{label}</a>
+</p>

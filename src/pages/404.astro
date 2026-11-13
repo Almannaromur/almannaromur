@@ -1,0 +1,30 @@
+---
+import Action from '../components/Action.astro';
+import PageHero from '../components/PageHero.astro';
+import { routes, useTranslations } from '../i18n';
+import Base from '../layouts/Base.astro';
+
+// One 404 page for the whole site: Icelandic first, English underneath.
+const is = useTranslations('is');
+const en = useTranslations('en');
+// The English wording is not translated yet (src/i18n/index.ts holds the Icelandic in its
+// place), so the English half is left out until it differs from the Icelandic one.
+const hasEnglish = (en.notFoundTitle as string) !== is.notFoundTitle;
+---
+
+<Base locale="is" title={is.notFoundTitle} alternatePath={null}>
+  <PageHero lines={[is.notFoundTitle]}>
+    <p>{is.notFoundBody}</p>
+    <Action href={routes.home.is}>{is.notFoundCta}</Action>
+  </PageHero>
+
+  {
+    hasEnglish && (
+      <section class="page-frame flex flex-col items-start gap-6 pt-8" lang="en">
+        <h2 class="type-heading-32">{en.notFoundTitle}</h2>
+        <p class="type-body-20">{en.notFoundBody}</p>
+        <Action href={routes.home.en}>{en.notFoundCta}</Action>
+      </section>
+    )
+  }
+</Base>

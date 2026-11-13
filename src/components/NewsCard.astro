@@ -1,0 +1,72 @@
+---
+/**
+ * Figma: AR / News card.
+ *   grid  rounded image on top, category + date, headline (homepage, "more news");
+ *         the card lifts 10px on hover, as on the old site
+ *   list  text on the left, rounded image on the right (news page); on phones the
+ *         image follows the text, as on the old site.
+ *         Rows fade and slide in as they are scrolled to, as on the old site.
+ */
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Chip from './Chip.astro';
+import { formatDate, newsPath, NEWS_CATEGORY_CHIPS } from '../i18n';
+
+interface Props {
+  entry: CollectionEntry<'news'>;
+  layout?: 'grid' | 'list';
+}
+
+const { entry, layout = 'grid' } = Astro.props;
+const { title, date, category, summary, cover, coverAlt, coverPosition } = entry.data;
+const isList = layout === 'list';
+const chip = NEWS_CATEGORY_CHIPS[category];
+---
+
+<article
+  data-news-card
+  data-category={category}
+  data-reveal={isList ? 'down' : undefined}
+  class:list={[
+    'group/card relative flex gap-6',
+    isList
+      ? 'flex-col border-b border-brown/25 py-10 sm:flex-row sm:items-start md:items-center md:pb-[33px] md:pt-9 lg:px-9'
+      : 'flex-col transition-transform duration-300 hover:-translate-y-2.5',
+  ]}
+>
+  {
+    cover && (
+      <Image
+        src={cover}
+        alt={coverAlt}
+        widths={[450, 900]}
+        sizes="(min-width: 1000px) 33vw, 100vw"
+        style={coverPosition ? `object-position:${coverPosition}` : undefined}
+        class:list={[
+          'w-full object-cover',
+          isList
+            ? 'order-2 aspect-[326/184] rounded-card sm:aspect-square sm:w-[240px] sm:shrink-0 md:aspect-[447/250] md:w-[280px] lg:w-[447px]'
+            : 'aspect-square rounded-card md:aspect-[436/435]',
+        ]}
+      />
+    )
+  }
+  <div class:list={['flex min-w-0 flex-col', isList ? 'gap-3 sm:flex-1' : 'gap-6']}>
+    <p class="type-label-16 flex items-center gap-2.5">
+      <Chip tone={chip.tone} size={isList ? 'md' : 'sm'}>{chip.label}</Chip>
+      <time datetime={date.toISOString().slice(0, 10)} class="uppercase leading-[1.2]">{formatDate(date)}</time>
+    </p>
+    {/* Smaller headline where the text column is narrow, so long compounds stay on one line. */}
+    <h3
+      class:list={[
+        'type-heading-32',
+        isList ? 'max-sm:text-[1.625rem] md:max-lg:text-2xl' : 'leading-[1.24] sm:max-md:text-2xl',
+      ]}
+    >
+      <a href={newsPath(entry.id)} class:list={['after:absolute after:inset-0', isList && 'group-hover/card:underline']}>
+        {title}
+      </a>
+    </h3>
+    {isList && summary && <p class="text-xl leading-[1.34]">{summary}</p>}
+  </div>
+</article>

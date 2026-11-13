@@ -1,0 +1,82 @@
+---
+/**
+ * Markdoc tag {% card %}: a bordered card with one kind of top area.
+ *   image  photo across the top (file in src/assets/images/projects/)
+ *   logo   partner logo centred in a blank area (file in src/assets/images/logos/,
+ *          or "almannaromur" for the brand symbol)
+ *   icon   white icon on the Kveikja gradient (file in src/assets/icons/projects/)
+ * With `href` the whole card is a link.
+ */
+import { Image } from 'astro:assets';
+import symbol from '../../assets/brand/symbol.svg';
+import { externalLinkAttrs } from '../../lib/links';
+
+interface Props {
+  title?: string;
+  image?: string;
+  logo?: string;
+  icon?: string;
+  href?: string;
+}
+
+const { title, image, logo, icon, href } = Astro.props;
+
+const photos = import.meta.glob<{ default: ImageMetadata }>('../../assets/images/projects/*', { eager: true });
+const logos = import.meta.glob<{ default: ImageMetadata }>('../../assets/images/logos/*', { eager: true });
+const icons = import.meta.glob<{ default: ImageMetadata }>('../../assets/icons/projects/*.svg', { eager: true });
+
+const photo = image ? photos[`../../assets/images/projects/${image}`]?.default : undefined;
+const logoImage = logo === 'almannaromur' ? symbol : logo ? logos[`../../assets/images/logos/${logo}`]?.default : undefined;
+const iconImage = icon ? icons[`../../assets/icons/projects/${icon}`]?.default : undefined;
+if (image && !photo) throw new Error(`Card image not found: src/assets/images/projects/${image}`);
+if (logo && !logoImage) throw new Error(`Card logo not found: src/assets/images/logos/${logo}`);
+if (icon && !iconImage) throw new Error(`Card icon not found: src/assets/icons/projects/${icon}`);
+---
+
+<article class="group/card relative flex flex-col overflow-clip rounded-card bg-card before:pointer-events-none before:absolute before:inset-0 before:z-10 before:rounded-card before:border before:border-rule lg:min-h-[var(--card-min,0px)]">
+  {
+    photo && (
+      <Image
+        src={photo}
+        alt=""
+        widths={[450, 700, 1400]}
+        sizes="(min-width: 1000px) 50vw, 100vw"
+        class="h-[200px] w-full object-cover md:h-[var(--card-media,232px)]"
+      />
+    )
+  }
+  {
+    logoImage && (
+      <div class="flex h-[208px] items-center justify-center px-6 pt-6">
+        {logo === 'almannaromur' ? (
+          <img src={logoImage.src} alt="" class="h-[126px] w-auto" />
+        ) : (
+          <Image src={logoImage} alt="" width={Math.min(logoImage.width, 600)} class="max-h-[126px] w-auto max-w-[62%] object-contain" />
+        )}
+      </div>
+    )
+  }
+  {
+    iconImage && (
+      <div class="flex h-[232px] items-center justify-center bg-[linear-gradient(255deg,#ed2be0_0%,#5743f1_100%)]">
+        <img src={iconImage.src} alt="" class="h-[88px] w-auto" />
+      </div>
+    )
+  }
+  <div class="flex flex-1 flex-col gap-4 p-6 md:pb-[var(--card-foot,24px)] md:pt-[var(--card-top,24px)]">
+    {
+      title && (
+        <h3 class="type-heading-32">
+          {href ? (
+            <a href={href} {...externalLinkAttrs(href)} class="after:absolute after:inset-0 after:rounded-card group-hover/card:underline">
+              {title}
+            </a>
+          ) : (
+            title
+          )}
+        </h3>
+      )
+    }
+    <div class="type-body-20 flex flex-col gap-4"><slot /></div>
+  </div>
+</article>

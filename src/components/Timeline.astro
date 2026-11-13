@@ -1,0 +1,97 @@
+---
+/**
+ * Homepage timeline, following the live (Framer) site rather than the Figma file:
+ * a dark band that scrolls sideways, with a thin axis through the middle.
+ * Milestones hang off the axis alternately (year above / text below, then
+ * text above / year below). A milestone's photo sits to its right, centred
+ * on the axis. Measurements are taken from the live site.
+ */
+import { Image } from 'astro:assets';
+import symbol from '../assets/brand/symbol.svg';
+
+interface Milestone {
+  year: string;
+  text: string;
+  image?: ImageMetadata;
+  /** Displayed [width, height] of the photo in px; the photo is cropped to fill it. */
+  imageSize?: [number, number];
+}
+
+interface Props {
+  heading: string;
+  milestones: Milestone[];
+}
+
+const { heading, milestones } = Astro.props;
+---
+
+<section class="bg-brown text-canvas">
+  <!-- Focusable so it can be scrolled with the arrow keys. -->
+  <div class="overflow-x-auto overflow-y-clip" tabindex="0" role="region" aria-label={heading}>
+    <div class="relative flex h-[822px] w-max items-stretch pr-8 pt-[240px] md:pr-[74px] md:pt-0">
+      <!-- Brand symbol as a faint watermark behind the heading. -->
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute -left-[190px] top-1/2 h-[780px] w-[682px] -translate-y-1/2 bg-canvas/10"
+        style={`mask: url(${symbol.src}) center / contain no-repeat; -webkit-mask: url(${symbol.src}) center / contain no-repeat;`}
+      >
+      </div>
+
+      <h2
+        class="type-heading-64 absolute left-8 top-[180px] font-serif md:type-display-serif md:static md:ml-[74px] md:mr-[100px] md:w-[448px] md:self-center"
+      >
+        {heading}
+      </h2>
+
+      <ol
+        class="relative flex pl-8 before:absolute before:inset-x-0 before:top-1/2 before:h-px before:bg-canvas/40 md:pl-0"
+      >
+        {
+          milestones.map((item, i) => {
+            const previous = milestones[i - 1];
+            const yearFirst = i % 2 === 0;
+            return (
+              <li
+                class:list={[
+                  'relative flex shrink-0 items-stretch',
+                  i > 0 && (previous?.image ? 'ml-12' : 'ml-[34px]'),
+                ]}
+              >
+                <div class="grid w-[245px] grid-rows-2">
+                  <span class="absolute left-0 top-1/2 size-2 -translate-y-1/2 rounded-pill bg-blue" aria-hidden="true" />
+                  {/* Year comes first in the markup; odd milestones show it below the axis. */}
+                  <p
+                    class:list={[
+                      'font-serif text-[48px] italic leading-[60px]',
+                      yearFirst ? 'row-start-1 self-end pb-8' : 'row-start-2 self-start pt-[31px]',
+                    ]}
+                  >
+                    {item.year}
+                  </p>
+                  <p
+                    class:list={[
+                      'type-label-16 w-[231px]',
+                      yearFirst ? 'row-start-2 self-start pt-[31px]' : 'row-start-1 self-end pb-8',
+                    ]}
+                  >
+                    {item.text}
+                  </p>
+                </div>
+                {item.image && (
+                  <Image
+                    src={item.image}
+                    alt=""
+                    width={(item.imageSize?.[0] ?? 320) * 2}
+                    loading="lazy"
+                    style={`width: ${item.imageSize?.[0] ?? 320}px; height: ${item.imageSize?.[1] ?? 220}px`}
+                    class="relative ml-[34px] self-center rounded-card object-cover"
+                  />
+                )}
+              </li>
+            );
+          })
+        }
+      </ol>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,970 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens from the Figma file "Almannarómur – Design system & website"
+ * (page "01 · DLS foundations"). Names follow the Figma variables (--ar-*).
+ */
+@theme {
+  /*
+   * Reference widths in the design: 390 mobile, 810 tablet, 1440 desktop.
+   *   (base)  phone: one column
+   *   sm      tablet (700 and up): still stacked, but card grids go two-up
+   *   md      desktop layout (1000 and up): heading-left sections, three-up grids
+   *   lg      full desktop measurements (1200 and up)
+   */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 700px;
+  --breakpoint-md: 1000px;
+  --breakpoint-lg: 1200px;
+
+  --font-serif: 'Roboto Serif Variable', 'Roboto Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Space Grotesk Variable', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand palette: Dúnhvítur, Leirbrúnn, Heiðblár, Vor. */
+  --color-*: initial;
+  --color-canvas: #fffaf3;
+  --color-brown: #392b29;
+  --color-blue: #b9f2ff;
+  --color-yellow: #f9ec7f;
+  --color-green: #a9d1a2;
+  /* Card surface and hairlines, as measured on the old site. */
+  --color-card: #fdf8ed;
+  --color-rule: rgb(57 43 41 / 0.5);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --radius-*: initial;
+  --radius-xs: 4px;
+  --radius-control: 8px;
+  --radius-card: 20px;
+  --radius-pill: 999px;
+
+  /* Page frame: 1440 wide with 32px gutters. */
+  --container-page: 1440px;
+}
+
+:root {
+  /* Figma semantic aliases. */
+  --ar-surface-canvas: var(--color-canvas);
+  --ar-surface-inverse: var(--color-brown);
+  --ar-surface-blue: var(--color-blue);
+  --ar-surface-yellow: var(--color-yellow);
+  --ar-text-primary: var(--color-brown);
+  --ar-text-inverse: var(--color-canvas);
+  --ar-border-default: var(--color-brown);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /*
+     * Roboto Serif is drawn at its text optical size at every font size, as on
+     * the old site. Without this, large headings get a narrower, lighter cut.
+     */
+    font-variation-settings: 'opsz' 14;
+  }
+  body {
+    background: var(--color-canvas);
+    color: var(--color-brown);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.3125;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 400;
+    /* Long Icelandic compounds must never push the page wider than the screen. */
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brown);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ text styles
+   One utility per Figma text style (AR/Display, AR/Heading, AR/Body, AR/Label). */
+
+/*
+ * AR/Display/Serif: 96/103 desktop, 65/64 mobile. On tablets the headline is
+ * stacked above the introduction and has the full width, so it grows with the
+ * window (10vw); in the two-column desktop hero it follows the design (6.667vw).
+ */
+@utility type-display-serif {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 4.0625rem;
+  line-height: 1.02;
+  @media (min-width: 700px) {
+    font-size: clamp(4.0625rem, 10vw, 6rem);
+  }
+  @media (min-width: 1000px) {
+    font-size: clamp(4.0625rem, 6.667vw, 6rem);
+  }
+  @media (min-width: 1200px) {
+    line-height: 1.073;
+  }
+}
+/* AR/Display/Sans: 96/103 desktop, 65/64 mobile. */
+@utility type-display-sans {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 4.0625rem;
+  line-height: 1.02;
+  @media (min-width: 700px) {
+    font-size: clamp(4.0625rem, 10vw, 6rem);
+  }
+  @media (min-width: 1000px) {
+    font-size: clamp(4.0625rem, 6.667vw, 6rem);
+  }
+  @media (min-width: 1200px) {
+    line-height: 1.073;
+  }
+}
+/* 64px serif, used by the timeline heading on mobile. */
+@utility type-heading-64 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 4rem;
+  line-height: 1.02;
+}
+/* Section title used for "Á döfinni" and article headlines. */
+@utility type-heading-56 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2.375rem, 3.9vw, 3.5rem);
+  line-height: 1.143;
+}
+/* AR/Heading/48: 48/58. */
+@utility type-heading-48 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(2rem, 3.333vw, 3rem);
+  line-height: 1.208;
+}
+/* AR/Heading/38: 38/47. */
+@utility type-heading-38 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 2.64vw, 2.375rem);
+  line-height: 1.237;
+}
+/* Newsletter heading: 36/43.2. */
+@utility type-heading-36 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+/* AR/Heading/32: 32/38.4 (28/33.6 in the mobile footer). */
+@utility type-heading-32 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+@utility type-heading-28 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+/* AR/Heading/24: 24/29. */
+@utility type-heading-24 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.208;
+}
+/* AR/Body/24: 24/26. */
+@utility type-body-24 {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  line-height: 1.0833;
+}
+/* AR/Body/20: 20/26. */
+@utility type-body-20 {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+/* AR/Label/20: 20/24. */
+@utility type-label-20 {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+/* AR/Label/16: 16/21. */
+@utility type-label-16 {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.3125;
+}
+
+/* ------------------------------------------------------------------ layout */
+
+/*
+ * Page frame: content is at most 1376px wide and centred. The gutter is 32px on
+ * phones and tablets. On desktop it is 24px, as on the old site, except on the
+ * homepage, which keeps 32px (set with --page-gutter on <main>, see Base.astro).
+ */
+@utility page-frame {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 32px;
+  @media (min-width: 1000px) {
+    max-width: calc(1376px + 2 * var(--page-gutter, 24px));
+    padding-inline: var(--page-gutter, 24px);
+  }
+}
+
+/* Two equal columns (676 + 24 + 676): section heading left, content right. */
+@utility split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  @media (min-width: 1000px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Hairline above a section, with the space below it used on the old site. */
+@utility section-rule {
+  border-top: 1px solid var(--color-rule);
+  padding-top: 49px;
+}
+
+@layer components {
+  /*
+   * Site header. Three states, set by the script in Header.astro:
+   * top (transparent), hidden (scrolling down), floating (scrolling up).
+   * The floating card's measurements come from the live site.
+   */
+  .site-header {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    z-index: 30;
+    transition: opacity 0.3s;
+  }
+  .site-header.is-fixed {
+    position: fixed;
+  }
+  .site-header[data-state='hidden'] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .site-bar {
+    width: 100%;
+    max-width: var(--container-page);
+    margin: 0 auto;
+    padding: 32px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-card);
+    transition:
+      margin 0.3s,
+      padding 0.3s,
+      max-width 0.3s,
+      background-color 0.3s,
+      border-color 0.3s;
+  }
+  .site-header[data-state='floating'] .site-bar {
+    width: calc(100% - 48px);
+    max-width: calc(var(--container-page) - 48px);
+    margin-top: 32px;
+    padding: 15px 32px;
+    background: var(--color-canvas);
+    border-color: rgb(101 67 33 / 0.5);
+  }
+  /* Phones and small tablets: no card. The logo and menu button return over the page as they are. */
+  @media (max-width: 999.98px) {
+    .site-header[data-state='floating'] .site-bar {
+      width: 100%;
+      max-width: var(--container-page);
+      margin-top: 0;
+      padding: 32px;
+      background: transparent;
+      border-color: transparent;
+    }
+  }
+
+  /*
+   * Project dropdown under "Verkefni". It opens on hover or keyboard focus.
+   * It hangs from the link itself, starting slightly to its left, so moving the
+   * pointer down or sideways from the link always lands on the menu.
+   * Two more things keep it open on the way: closing waits a moment, and an
+   * invisible strip above the menu fills the gap under the navigation bar.
+   */
+  .project-menu {
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 0.2s,
+      visibility 0s linear 0.35s;
+  }
+  .project-menu::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 100%;
+    height: 20px;
+  }
+  /* The floating bar is shorter, so the menu hangs a little lower from the link. */
+  .site-header[data-state='floating'] .project-menu {
+    top: calc(100% + 2px);
+  }
+  [data-project-menu]:hover > .project-menu,
+  [data-project-menu]:focus-within > .project-menu {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0s;
+  }
+
+  /*
+   * Scroll-in, as on the old site: a block marked data-reveal starts transparent
+   * and 150px out of place, then settles when it scrolls into view.
+   *   data-reveal         comes down from above
+   *   data-reveal="up"    comes up from below (footer)
+   *   data-reveal="fade"  fades only
+   * The script in Base.astro adds .is-revealed. Nothing is hidden without JavaScript.
+   */
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(-150px);
+  }
+  html.js [data-reveal='up'] {
+    transform: translateY(150px);
+  }
+  html.js [data-reveal='fade'] {
+    transform: none;
+  }
+  html.js [data-reveal].is-revealing {
+    transition:
+      opacity 0.4s ease-in-out,
+      transform 0.4s ease-in-out;
+  }
+  html.js [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html.js [data-reveal] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media print {
+    html.js [data-reveal] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Washes behind the navigation and page hero (gradient stops from the Figma screens). */
+  .hero-wash-home {
+    background: linear-gradient(180deg, var(--color-blue) 0%, var(--color-yellow) 65%, var(--color-canvas) 100%);
+  }
+  .hero-wash-blue {
+    background: linear-gradient(180deg, var(--color-blue) 0%, var(--color-canvas) 100%);
+  }
+  .hero-wash-yellow {
+    background: linear-gradient(180deg, var(--color-yellow) 0%, var(--color-canvas) 100%);
+  }
+
+  /*
+   * Turn-over cards (FlipCard.astro). The card turns around its vertical axis,
+   * as on the old site. data-flip-trigger="hover" cards turn when the pointer is
+   * over them (mouse only) and on tap elsewhere; the others turn on click.
+   * Without JavaScript both faces are shown, stacked.
+   */
+  .flip-card,
+  .flip-card > .flip-inner {
+    display: flex;
+    flex-direction: column;
+  }
+  /*
+   * --flip-h is the least height. Both faces share one grid cell, so a card whose
+   * text needs more room (narrow screens, longer English text) grows to fit the
+   * taller face and nothing is cut off.
+   */
+  .flip-card.is-ready {
+    min-height: var(--flip-h, 540px);
+    perspective: 1200px;
+  }
+  @media (min-width: 1000px) {
+    .flip-card.is-ready {
+      min-height: var(--flip-h, 590px);
+    }
+  }
+  .flip-card.is-ready > .flip-inner {
+    display: grid;
+    flex: 1;
+    position: relative;
+    transform-style: preserve-3d;
+  }
+  /* Added two frames after set-up, so nothing moves on page load. */
+  .flip-card.is-animated > .flip-inner {
+    transition: transform 0.5s cubic-bezier(0.3, 0.1, 0.2, 1);
+  }
+  .flip-card.is-ready .flip-face {
+    position: relative;
+    grid-area: 1 / 1;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .flip-card.is-ready .flip-back {
+    transform: rotateY(180deg);
+  }
+  .flip-card.is-ready.is-flipped > .flip-inner {
+    transform: rotateY(180deg);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .flip-card.is-ready[data-flip-trigger='hover']:hover > .flip-inner {
+      transform: rotateY(180deg);
+    }
+  }
+  .flip-card:not(.is-ready) .flip-toggle {
+    display: none;
+  }
+
+  /*
+   * Staff card (StaffCard.astro): a blue panel with the person's description
+   * covers the portrait while the pointer is over it, or after a tap.
+   */
+  .staff-bio {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.15s,
+      visibility 0.15s;
+  }
+  .staff-card.is-open .staff-bio {
+    opacity: 1;
+    visibility: visible;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .staff-media:hover .staff-bio {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  /* Board (AboutView.astro): the hovered or tapped name is highlighted and that person's photo replaces the group photo. */
+  .board-name[data-active] {
+    background: var(--color-blue);
+  }
+  .board-photo {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .board-photo[data-active] {
+    opacity: 1;
+  }
+
+  /*
+   * Text links with an arrow (Action.astro): a hairline appears under the whole
+   * label while the pointer is over it, as on the old site.
+   */
+  .action-text {
+    position: relative;
+  }
+  .action-text::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 -4px;
+    border-bottom: 1px solid transparent;
+    pointer-events: none;
+  }
+  @media (hover: hover) {
+    a.action-text:hover::after,
+    .group\/card:hover .action-text::after {
+      border-bottom-color: var(--color-brown);
+    }
+  }
+  a.action-text:focus-visible::after {
+    border-bottom-color: var(--color-brown);
+  }
+
+  /* Um okkur: the yellow wash runs behind the top of the page (13% of its height on the old site). */
+  .page-wash-yellow {
+    background: linear-gradient(180deg, var(--color-yellow) 0, var(--color-canvas) 938px);
+  }
+
+  /* Long-form text: news articles and project pages (rendered Markdoc). */
+  .prose {
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+  .prose > article > * + * {
+    margin-top: 24px;
+  }
+  .prose > article > :first-child {
+    margin-top: 0;
+  }
+  .prose h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 2.64vw, 2.375rem);
+    line-height: 1.237;
+    margin-top: 64px;
+  }
+  .prose h3 {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-top: 48px;
+  }
+  .prose h4 {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    line-height: 1.208;
+    margin-top: 40px;
+  }
+  .prose a {
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
+    text-decoration-thickness: 1px;
+    overflow-wrap: anywhere;
+  }
+  .prose a:hover {
+    background: var(--color-yellow);
+  }
+  .prose strong {
+    font-weight: 600;
+  }
+  .prose ul,
+  .prose ol {
+    padding-left: 1.2em;
+  }
+  .prose ul {
+    list-style: disc;
+  }
+  .prose ol {
+    list-style: decimal;
+  }
+  .prose li + li {
+    margin-top: 12px;
+  }
+  .prose li > p + p {
+    margin-top: 12px;
+  }
+  .prose blockquote {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    line-height: 1.2;
+    border-left: 1px solid var(--color-brown);
+    padding-left: 24px;
+    margin-block: 48px;
+  }
+  .prose img {
+    border-radius: var(--radius-card);
+    height: auto;
+  }
+  /* Tables: used for grant lists in news articles (name and description left, amount right). */
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgb(185 242 255 / 0.3);
+    border-radius: var(--radius-card);
+  }
+  .prose thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .prose td {
+    padding: 16px 24px;
+    vertical-align: top;
+  }
+  .prose td > * + * {
+    margin-top: 8px;
+  }
+  .prose td:last-child {
+    font-weight: 600;
+    text-align: right;
+    white-space: nowrap;
+  }
+  /* On phones each row stacks: text first, amount underneath. */
+  @media (max-width: 999.98px) {
+    .prose table,
+    .prose tbody,
+    .prose tr,
+    .prose td {
+      display: block;
+    }
+    .prose td {
+      padding: 16px 16px 0;
+    }
+    .prose td:last-child {
+      padding-bottom: 16px;
+      text-align: left;
+    }
+  }
+  .prose hr {
+    border-color: var(--color-brown);
+    margin-block: 48px;
+  }
+
+  .prose .not-prose a {
+    text-decoration: none;
+    overflow-wrap: normal;
+  }
+  .prose .not-prose a:hover {
+    background: none;
+  }
+  .prose .not-prose :is(h2, h3, h4) {
+    margin-top: 0;
+  }
+  .prose .not-prose img {
+    border-radius: 0;
+  }
+  .prose .not-prose :is(ul, ol) {
+    list-style: none;
+    padding-left: 0;
+  }
+  .prose .not-prose li + li {
+    margin-top: 0;
+  }
+
+  /*
+   * News articles. Type and spacing follow the old site: 20/26.8 text with 20px
+   * between paragraphs, sans headings, images at the column width with square
+   * corners. An empty paragraph (a non-breaking space) is an intentional gap.
+   */
+  .prose-article {
+    line-height: 1.34;
+  }
+  .prose-article > article > * {
+    margin-top: 0;
+  }
+  .prose-article > article > :is(p, blockquote, table) {
+    margin-top: 20px;
+  }
+  .prose-article > article > :is(h2, h3, h4) {
+    margin-top: 40px;
+  }
+  .prose-article > article > h3 {
+    margin-top: 41px;
+  }
+  /* An image sits directly under what comes before it. */
+  .prose-article > article > p:has(> img:only-child) {
+    margin-top: 0;
+  }
+  .prose-article > article > :first-child {
+    margin-top: 0;
+  }
+  .prose-article :is(h2, h3, h4) {
+    font-family: var(--font-sans);
+    letter-spacing: -0.04em;
+    hyphens: manual;
+  }
+  .prose-article h2 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  .prose-article h3 {
+    font-size: 1.375rem;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+  .prose-article h4 {
+    font-size: 1.375rem;
+    line-height: 1.4;
+    font-weight: 700;
+  }
+  .prose-article strong {
+    font-weight: 700;
+  }
+  /* Links in articles look like the text around them until hovered, as on the old site. */
+  .prose-article a {
+    text-decoration: none;
+  }
+  .prose-article a:hover {
+    background: none;
+    color: #43b7d1;
+    text-decoration: underline;
+  }
+  .prose-article img {
+    width: 100%;
+    border-radius: 0;
+  }
+  .prose-article :is(ul, ol) {
+    padding-left: 0;
+    list-style-position: inside;
+  }
+  .prose-article li + li {
+    margin-top: 0;
+  }
+  .prose-article li > p {
+    display: inline;
+  }
+  /* {% arrows %} */
+  .prose-article .arrow-list ul {
+    list-style: none;
+    line-height: 1.3;
+  }
+  .prose-article .arrow-list li {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+  .prose-article .arrow-list li::before {
+    content: '→';
+  }
+  /* {% quote %} */
+  .prose .prose-quote {
+    padding-block: 24px;
+  }
+  .prose .prose-quote blockquote {
+    margin: 0;
+    padding-left: 16px;
+    border-left: 1px solid var(--color-brown);
+    font-family: var(--font-serif);
+    font-size: 1.625rem;
+    line-height: 1.115;
+  }
+  .prose .prose-quote figcaption {
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+    text-align: right;
+    line-height: 1.3;
+  }
+  .prose .prose-quote figcaption strong {
+    font-weight: 600;
+  }
+  /* {% caption %} */
+  .prose .prose-caption {
+    max-width: 559px;
+    font-size: 1rem;
+    line-height: 1.375;
+    font-weight: 600;
+  }
+  /* {% button %} */
+  .prose .prose-button {
+    display: flex;
+    justify-content: center;
+  }
+  .prose-article > article > .prose-button {
+    margin-top: 0;
+  }
+  .prose .prose-button a {
+    width: 442px;
+    max-width: 100%;
+    padding: 23px;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-card);
+    background: rgb(249 236 127 / 0.5);
+    font-size: 1.25rem;
+    line-height: 1.2;
+    font-weight: 600;
+    text-align: center;
+  }
+  /* {% panel %}: pale blue box. A table inside it lists name + description (left) and amount (right). */
+  .prose .prose-panel {
+    padding: 24px;
+    border-radius: var(--radius-card);
+    background: rgb(185 242 255 / 0.25);
+    line-height: 1.3;
+  }
+  .prose .prose-panel-heading {
+    font-weight: 600;
+  }
+  .prose .prose-panel table,
+  .prose .prose-panel tbody,
+  .prose .prose-panel td {
+    display: block;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+  }
+  .prose .prose-panel table {
+    margin-top: 24px;
+  }
+  .prose .prose-panel tr {
+    display: grid;
+    grid-template-columns: minmax(0, 361fr) minmax(0, 256fr);
+    column-gap: 12px;
+  }
+  .prose .prose-panel tr + tr {
+    margin-top: 52px;
+  }
+  .prose .prose-panel td > * + * {
+    margin-top: 26px;
+  }
+  .prose .prose-panel td:last-child {
+    font-weight: 600;
+    text-align: right;
+    white-space: normal;
+  }
+  .prose .prose-panel strong {
+    font-weight: 600;
+  }
+
+  /* {% accordion %} inside an article: the answer is set looser, as on the old site. */
+  .prose-article .accordion-block summary + div {
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  .prose-article .accordion-block summary {
+    line-height: 1.34;
+  }
+
+  /*
+   * Project pages. Layout follows the old site's project pages:
+   * every "##" heading starts a section with a hairline above it; on wide
+   * screens the heading sits in the left column and its text in the right.
+   * Card grids and other ".span-full" blocks run across both columns.
+   */
+  .prose-split h2 {
+    font-size: clamp(2rem, 3.333vw, 3rem);
+    line-height: 1.208;
+    margin-top: 72px;
+    padding-top: 40px;
+    border-top: 1px solid var(--color-rule);
+  }
+  .prose-split .span-full {
+    margin-top: 48px;
+  }
+  .prose-split .accordion-block + .accordion-block {
+    margin-top: 0;
+  }
+  /* Numbered points: small "01" in a narrow column, text beside it. */
+  .prose-split ol:not(.not-prose ol) {
+    list-style: none;
+    padding-left: 0;
+    counter-reset: point;
+  }
+  .prose-split ol:not(.not-prose ol) > li {
+    counter-increment: point;
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    padding-block: 28px;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .prose-split ol:not(.not-prose ol) > li::before {
+    content: counter(point, decimal-leading-zero);
+    font-size: 0.875rem;
+    line-height: 26px;
+  }
+  .prose-split ol:not(.not-prose ol) > li > * {
+    grid-column: 2;
+  }
+  .prose-split ol:not(.not-prose ol) > li > * + * {
+    margin-top: 24px;
+  }
+  .prose-split ol:not(.not-prose ol) > li + li {
+    margin-top: 0;
+  }
+  /* Bulleted points use an arrow. */
+  .prose-split ul:not(.not-prose ul) {
+    list-style: none;
+    padding-left: 0;
+  }
+  .prose-split ul:not(.not-prose ul) > li {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+  .prose-split ul:not(.not-prose ul) > li::before {
+    content: '→';
+  }
+  .prose-split ul:not(.not-prose ul) > li > * {
+    grid-column: 2;
+  }
+  .prose-split ul:not(.not-prose ul) > li + li {
+    margin-top: 8px;
+  }
+  @media (min-width: 1000px) {
+    /*
+     * Desktop measurements from the old site. A section is a hairline, 42px, then
+     * the heading (left) and its text (right); sections and full-width blocks
+     * are 100px apart. Paragraphs are one blank line (26px) apart; lists
+     * and links are 42px from the text around them. The grid's 26px row gap is
+     * part of every distance, so the margins below are the measured distance
+     * minus 26.
+     */
+    .prose-split > article {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 24px;
+      row-gap: 27px;
+      align-items: start;
+      line-height: 1.34;
+    }
+    .prose-split > article > * {
+      grid-column: 2;
+      margin-top: 0;
+    }
+    /* Heading and the block after it share a row; the hairline runs under both columns. */
+    .prose-split > article > h2 {
+      grid-column: 1;
+      position: relative;
+      border-top: 0;
+      margin-top: 74px;
+      padding-top: 42px;
+    }
+    .prose-split > article > h2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: calc(200% + 24px);
+      border-top: 1px solid var(--color-rule);
+    }
+    .prose-split > article > h2 + * {
+      margin-top: 74px;
+      padding-top: 42px;
+    }
+    /* First section: 100px under the picture. */
+    .prose-split > article > h2:first-child,
+    .prose-split > article > h2:first-child + * {
+      margin-top: 100px;
+    }
+    /* A text link is followed by a few more pixels. */
+    .prose-split > article > .prose-action + h2,
+    .prose-split > article > .prose-action + h2 + * {
+      margin-top: 80px;
+    }
+    .prose-split > article > :is(ol, ul, .prose-action),
+    .prose-split > article > :is(ol, ul) + * {
+      margin-top: 16px;
+    }
+    .prose-split > article > .span-full {
+      grid-column: 1 / -1;
+      margin-top: 74px;
+    }
+    .prose-split > article > .prose-action + .span-full {
+      margin-top: 82px;
+    }
+    /* A card grid straight under a heading starts 100px below the hairline. */
+    .prose-split > article > h2 + .span-full {
+      margin-top: -27px;
+      padding-top: 0;
+    }
+    .prose-split > article > .accordion-block + .accordion-block {
+      margin-top: -27px;
+    }
+    .prose-split ol:not(.not-prose ol) > li {
+      padding-block: 42px;
+    }
+  }
+}

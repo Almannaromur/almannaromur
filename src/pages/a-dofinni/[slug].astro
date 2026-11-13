@@ -1,0 +1,98 @@
+---
+/**
+ * News article. Layout and measurements follow the old site:
+ * category chip and date, centred 65px headline (1000px wide), cover image
+ * (1140 x 620), then a reading row: optional boxes on the left (393px) and the
+ * text on the right (677px). On phones and tablets the boxes sit above the text.
+ */
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import Chip from '../../components/Chip.astro';
+import { formatDate, NEWS_CATEGORY_CHIPS } from '../../i18n';
+import Base from '../../layouts/Base.astro';
+import { getNews } from '../../lib/content';
+import { externalLinkAttrs } from '../../lib/links';
+
+export async function getStaticPaths() {
+  const news = await getNews();
+  return news.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props {
+  entry: CollectionEntry<'news'>;
+}
+
+const { entry } = Astro.props;
+const { title, date, category, summary, cover, coverAlt, coverPosition, calloutText, calloutLink, sideText } = entry.data;
+const { Content } = await render(entry);
+// 23px + the 1px border = the old site's 24px inset.
+const box = 'block rounded-card border border-rule p-[23px] text-xl leading-[1.2] whitespace-pre-line';
+const callout = [box, 'bg-yellow/50 text-center font-semibold'];
+---
+
+<Base
+  locale="is"
+  title={title}
+  description={summary || undefined}
+  current="news"
+  image={cover?.src}
+  ogType="article"
+  footerGap={176}
+>
+  <article class="pt-[140px] md:pt-[203px]">
+    <header class="page-frame">
+      <div class="mx-auto flex max-w-[1000px] flex-col items-center gap-2.5 text-center">
+        <p class="flex flex-wrap items-center justify-center gap-2.5">
+          <Chip tone={NEWS_CATEGORY_CHIPS[category].tone}>{NEWS_CATEGORY_CHIPS[category].label}</Chip>
+          <time datetime={date.toISOString().slice(0, 10)} class="type-label-16 font-medium uppercase leading-[1.2]">
+            {formatDate(date)}
+          </time>
+        </p>
+        <h1 class="text-balance font-serif text-[clamp(2.375rem,4.52vw,4.0625rem)] leading-[1.24]">{title}</h1>
+      </div>
+    </header>
+
+    {
+      cover && (
+        <div class="page-frame mt-8 md:mt-14">
+          <Image
+            src={cover}
+            alt={coverAlt}
+            widths={[750, 1140, 2280]}
+            sizes="(min-width: 1204px) 1140px, 100vw"
+            loading="eager"
+            style={coverPosition ? `object-position:${coverPosition}` : undefined}
+            class="mx-auto aspect-[362/241] w-full max-w-[1140px] rounded-card object-cover md:aspect-[1140/620]"
+          />
+        </div>
+      )
+    }
+
+    <div class="page-frame mt-10 md:mt-14">
+      <div class="mx-auto grid max-w-[1094px] grid-cols-1 items-start gap-6 md:grid-cols-[393fr_677fr]">
+        <div class="flex flex-col gap-6">
+          {
+            calloutText &&
+              (calloutLink ? (
+                <a
+                  href={calloutLink}
+                  {...externalLinkAttrs(calloutLink)}
+                  class:list={callout}
+                >
+                  {calloutText}
+                </a>
+              ) : (
+                <p class:list={callout}>{calloutText}</p>
+              ))
+          }
+          {sideText && <p class:list={[box, 'font-bold']}>{sideText}</p>}
+        </div>
+        <div class="min-w-0">
+          <div class="prose prose-article">
+            <Content />
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</Base>

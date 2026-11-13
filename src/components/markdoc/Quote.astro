@@ -1,0 +1,24 @@
+---
+/**
+ * Markdoc tag {% quote name="…" role="…" %}text{% /quote %}:
+ * a pull quote with a rule on its left and the speaker underneath, right-aligned.
+ */
+interface Props {
+  name?: string;
+  role?: string;
+}
+
+const { name, role } = Astro.props;
+---
+
+<figure class="prose-quote">
+  <blockquote><slot /></blockquote>
+  {
+    (name || role) && (
+      <figcaption>
+        {name && <strong>{name}</strong>}
+        {role && <span>{role}</span>}
+      </figcaption>
+    )
+  }
+</figure>

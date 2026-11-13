@@ -1,0 +1,38 @@
+---
+/**
+ * Markdoc tag {% flipcard %}: a turn-over card inside {% cards %}.
+ * Front: icon, title and a note at the foot. Back: the tag's content.
+ * As on the old site it turns while the pointer is over it (on tap on touch screens).
+ */
+import FlipCard from '../FlipCard.astro';
+import defaultIcon from '../../assets/icons/projects/kjarnaverkefni.svg';
+import { useTranslations, type Locale } from '../../i18n';
+
+interface Props {
+  title: string;
+  note?: string;
+  icon?: string;
+}
+
+const { title, note, icon } = Astro.props;
+const icons = import.meta.glob<{ default: ImageMetadata }>('../../assets/icons/projects/*.svg', { eager: true });
+const iconImage = icon ? icons[`../../assets/icons/projects/${icon}`]?.default : defaultIcon;
+const t = useTranslations((Astro.currentLocale ?? 'is') as Locale);
+---
+
+<FlipCard
+  title={title}
+  showLabel={t.flipShow}
+  hideLabel={t.flipHide}
+  trigger="hover"
+  frontClass="bg-card px-6 pb-[41px] pt-[42px]"
+  backClass="bg-blue px-6 pb-6 pt-[42px]"
+  class="[--flip-h:461px]"
+>
+  <Fragment slot="front">
+    {iconImage && <img src={iconImage.src} alt="" class="h-[30px] w-auto self-start" />}
+    <h3 class="type-heading-32 mt-4">{title}</h3>
+    {note && <p class="mt-auto pt-6 text-xl font-medium leading-[1.34]">{note}</p>}
+  </Fragment>
+  <Fragment slot="back"><slot /></Fragment>
+</FlipCard>

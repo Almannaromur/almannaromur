@@ -1,0 +1,21 @@
+---
+/**
+ * Markdoc tag {% cards %}: a full-width grid of cards, two or three to a row.
+ * Heights follow the old site: 580px for two-up cards, 414px for three-up cards (at full desktop size).
+ */
+interface Props {
+  columns?: number;
+}
+
+const { columns = 3 } = Astro.props;
+---
+
+<div
+  class:list={[
+    'not-prose span-full grid grid-cols-1 gap-6',
+    columns === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3',
+  ]}
+  style={columns === 2 ? '--card-media:306px;--card-min:580px;--card-top:48px;--card-foot:42px' : '--card-min:414px'}
+>
+  <slot />
+</div>

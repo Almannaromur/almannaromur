@@ -1,0 +1,32 @@
+---
+/**
+ * Figma: AR / Accordion. Question row with a chevron, rule underneath,
+ * answer revealed below. Built on <details>, so it works without JavaScript
+ * and is operable from the keyboard.
+ */
+import chevron from '../assets/icons/chevron-down.svg';
+
+interface Props {
+  question: string;
+}
+
+const { question } = Astro.props;
+---
+
+<details class="group/accordion border-b border-rule">
+  <summary
+    class="type-body-20 flex cursor-pointer list-none items-center gap-6 py-10 [&::-webkit-details-marker]:hidden"
+  >
+    <span class="min-w-0 flex-1 font-medium">{question}</span>
+    <img
+      src={chevron.src}
+      alt=""
+      width="24"
+      height="24"
+      class="size-6 shrink-0 transition-transform group-open/accordion:rotate-180"
+    />
+  </summary>
+  <div class="type-body-20 -mt-2 flex flex-col gap-4 pb-10 [&_a]:underline [&_ul]:list-disc [&_ul]:pl-6">
+    <slot />
+  </div>
+</details>

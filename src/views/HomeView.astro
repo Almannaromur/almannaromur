@@ -1,0 +1,147 @@
+---
+/** Figma: 03 · Desktop screens / 01 Home and 04 · Mobile screens / Home. */
+import technologyImage from '../assets/images/pages/islenska-i-taekni.png';
+import reportImage from '../assets/images/pages/stada-gervigreindar.png';
+import Accordion from '../components/Accordion.astro';
+import Action from '../components/Action.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import NewsCard from '../components/NewsCard.astro';
+import Newsletter from '../components/Newsletter.astro';
+import NumberedPriority from '../components/NumberedPriority.astro';
+import PageHero from '../components/PageHero.astro';
+import Timeline from '../components/Timeline.astro';
+import { home } from '../data/home';
+import { site } from '../data/site';
+import { otherLocale, projectPath, routes, useTranslations, type Locale } from '../i18n';
+import Base from '../layouts/Base.astro';
+import { getNews, getProjects } from '../lib/content';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const c = home[locale];
+
+// Homepage cards can use their own artwork instead of the project's image.
+const cardImages: Record<string, ImageMetadata> = { maltaekni: technologyImage };
+
+// Three feature cards: the report, then the two featured projects.
+const projects = await getProjects(locale);
+const cards = [
+  { title: c.report.title, text: c.report.text, href: site.reportUrl as string, image: reportImage as ImageMetadata | undefined },
+  ...c.featured.flatMap((item) => {
+    const project = projects.find((p) => p.slug === item.slug);
+    return project
+      ? [{ title: item.title, text: item.text, href: projectPath(locale, item.slug), image: cardImages[item.slug] ?? project.entry.data.image }]
+      : [];
+  }),
+];
+
+// Displayed size (width, height) of each timeline photo, as on the live site.
+const TIMELINE_PHOTO_SIZES: Record<string, [number, number]> = {
+  't1.png': [530, 300],
+  't2.png': [246, 346],
+  't3.png': [417, 270],
+  't4.png': [261, 220],
+  't5.png': [349, 248],
+  't6.png': [475, 346],
+};
+
+const timelineImages = import.meta.glob<{ default: ImageMetadata }>('../assets/images/timeline/*', { eager: true });
+const milestones = c.timeline.map((item) => ({
+  year: item.year,
+  text: item.text,
+  image: item.image ? timelineImages[`../assets/images/timeline/${item.image}`]?.default : undefined,
+  imageSize: item.image ? TIMELINE_PHOTO_SIZES[item.image] : undefined,
+}));
+
+// News exists in Icelandic only.
+const latestNews = routes.news[locale] ? (await getNews()).slice(0, 3) : [];
+---
+
+<Base locale={locale} alternatePath={routes.home[otherLocale(locale)]} gutter={32}>
+  <PageHero lines={c.hero.lines} wash="home" bottom={96} top={390}>
+    <p>{c.hero.lede}</p>
+    <Action href={routes.about[locale]}>{c.hero.cta}</Action>
+  </PageHero>
+
+  <!-- Featured projects -->
+  <section class="page-frame grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+    {
+      cards.map((card, i) => (
+        <FeatureCard
+          title={card.title}
+          description={card.text}
+          href={card.href}
+          image={card.image}
+          category={t.nav.projects}
+          actionLabel={t.readMore}
+          tabletWide={cards.length % 2 === 1 && i === cards.length - 1}
+        />
+      ))
+    }
+  </section>
+
+  <!-- Priorities: heading in the first of three columns, list across the other two -->
+  <section class="page-frame pb-16 pt-24 md:pb-[86px] md:pt-[182px]">
+    <div class="section-rule grid grid-cols-1 gap-6 md:grid-cols-3 md:pt-[42px]" data-reveal>
+      <h2 class="type-heading-36">{c.prioritiesHeading}</h2>
+      <div class="md:col-span-2 md:pl-1">
+        <NumberedPriority items={c.priorities.map((p) => p.title)} />
+      </div>
+    </div>
+  </section>
+
+  <Timeline heading={c.timelineHeading} milestones={milestones} />
+
+  <!-- Latest news (Icelandic only) -->
+  {
+    latestNews.length > 0 && (
+      <section class="page-frame pb-24 pt-16 md:pb-[200px] md:pt-[100px]">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 md:mb-[25px]" data-reveal>
+          <h2 class="type-heading-56 md:text-[4rem] md:leading-[130px]">{c.newsHeading}</h2>
+          <Action href={routes.news[locale] ?? undefined} class="md:mb-[27px]">{t.readMore}</Action>
+        </div>
+        <div class="grid grid-cols-1 items-start gap-x-6 gap-y-12 sm:grid-cols-3">
+          {latestNews.map((entry) => (
+            <NewsCard entry={entry} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <div class:list={[latestNews.length === 0 && 'pt-16 md:pt-[100px]']} data-reveal="fade">
+    <Newsletter locale={locale} heading={c.newsletterHeading} />
+  </div>
+
+  <!-- FAQ: heading in the first of three columns -->
+  <section class="page-frame pb-8 pt-24 md:pb-[39px] md:pt-[200px]">
+    <div class="section-rule grid grid-cols-1 gap-6 md:grid-cols-3 md:pt-[63px]" data-reveal>
+      <h2 class="type-heading-36">{c.faqHeading}</h2>
+      <div class="md:col-span-2 md:-mt-[23px]">
+        {
+          c.faq.map((item) => (
+            <Accordion question={item.question}>
+              {item.answer.map((p) => (
+                <p>{p}</p>
+              ))}
+              {item.list && (
+                <ul>
+                  {item.list.map((li) => (
+                    <li>{li}</li>
+                  ))}
+                </ul>
+              )}
+              {item.after?.map((p) => (
+                <p>{p}</p>
+              ))}
+            </Accordion>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Base>

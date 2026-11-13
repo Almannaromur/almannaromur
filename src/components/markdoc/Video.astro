@@ -1,0 +1,19 @@
+---
+/** Markdoc tag {% video %}: an embedded player (Vimeo, YouTube) with rounded corners. */
+interface Props {
+  src: string;
+  title: string;
+}
+
+const { src, title } = Astro.props;
+---
+
+<div class="aspect-[676/380] overflow-clip rounded-card bg-brown">
+  <iframe
+    src={src}
+    title={title}
+    loading="lazy"
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowfullscreen
+    class="size-full border-0"></iframe>
+</div>

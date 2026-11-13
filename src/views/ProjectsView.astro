@@ -1,0 +1,59 @@
+---
+/** Figma: 03 · Desktop screens / 02 Projects. */
+import FeatureCard from '../components/FeatureCard.astro';
+import PageHero from '../components/PageHero.astro';
+import { otherLocale, projectPath, routes, useTranslations, type Locale } from '../i18n';
+import Base from '../layouts/Base.astro';
+import { getProjects } from '../lib/content';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const projects = await getProjects(locale);
+// "Íslenska í tækni" has a yellow-to-blue wash in place of a picture.
+const GRADIENTS: Record<string, string> = { maltaekni: 'linear-gradient(231deg, #f9ec7f 0%, #b9f2ff 100%)' };
+
+const intro = {
+  is: 'Almannarómur er miðstöð máltækni og gervigreindar á Íslandi og hefur það hlutverk að fylgja íslenskunni inn í framtíðina. Almannarómur er óháð sjálfseignarstofnun.',
+  // PLACEHOLDER: this introduction is not in the professional translation.
+  en: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
+}[locale];
+// The page description for search engines stays in Icelandic until the introduction is translated.
+const description =
+  'Almannarómur er miðstöð máltækni og gervigreindar á Íslandi og hefur það hlutverk að fylgja íslenskunni inn í framtíðina. Almannarómur er óháð sjálfseignarstofnun.';
+---
+
+<Base
+  locale={locale}
+  title={t.nav.projects}
+  description={description}
+  current="projects"
+  alternatePath={routes.projects[otherLocale(locale)]}
+  footerGap={88}
+>
+  <PageHero lines={[t.nav.projects]} wash="blue" top={385} bottom={113}>
+    <p>{intro}</p>
+  </PageHero>
+
+  <!-- The hairline under the introduction is only there on phones and tablets, as on the old site. -->
+  <div class="page-frame pb-12 md:hidden"><div class="h-px bg-rule"></div></div>
+
+  <section class="page-frame grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-y-[42px]">
+    {
+      projects.map(({ slug, entry }) => (
+        <FeatureCard
+          layout="listing"
+          title={entry.data.title}
+          description={entry.data.summary}
+          href={projectPath(locale, slug)}
+          image={GRADIENTS[slug] ? undefined : entry.data.image}
+          gradient={GRADIENTS[slug]}
+          actionLabel={t.readMore}
+        />
+      ))
+    }
+  </section>
+</Base>

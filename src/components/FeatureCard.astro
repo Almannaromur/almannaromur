@@ -1,0 +1,87 @@
+---
+/**
+ * Figma: AR / Feature card. Measurements follow the old site's cards.
+ *   feature  three-up card (438 x 569 at desktop): 229px image, 32px title
+ *   listing  two-up card (676px): 306px image, 48px title
+ * The text link at the foot is the link. The hairline is drawn on top of the card
+ * (::before), so it does not take width away from the text.
+ */
+import { Image } from 'astro:assets';
+import Action from './Action.astro';
+import Chip from './Chip.astro';
+
+interface Props {
+  layout?: 'feature' | 'listing';
+  title: string;
+  description: string;
+  href: string;
+  image?: ImageMetadata;
+  /** Yellow badge in the top-right corner. */
+  category?: string;
+  actionLabel: string;
+  /** On tablets (two-up grid) this card takes the whole row, image beside the text. Use for an odd last card. */
+  tabletWide?: boolean;
+  /** Card height at full desktop size, in px (feature cards: 569 on the homepage, 475 and 584 on Lausnir). */
+  minHeight?: number;
+  /** Height of the picture at desktop size, in px. */
+  imageHeight?: number;
+  /** A CSS gradient shown in place of a picture. */
+  gradient?: string;
+}
+
+const { layout = 'feature', title, description, href, image, category, actionLabel, tabletWide = false, gradient } = Astro.props;
+const isListing = layout === 'listing';
+const minHeight = Astro.props.minHeight ?? (isListing ? 626 : 569);
+const imageHeight = Astro.props.imageHeight ?? (isListing ? 306 : 229);
+const media = [
+  'w-full',
+  isListing ? 'h-[342px] sm:h-[220px] md:h-[var(--card-img)]' : 'h-[170px] sm:h-[200px] md:h-[var(--card-img)]',
+  tabletWide && 'sm:max-md:h-auto sm:max-md:min-h-[240px] sm:max-md:w-1/2 sm:max-md:self-stretch',
+];
+---
+
+<article
+  class:list={[
+    'relative flex h-full flex-col overflow-clip rounded-card bg-card',
+    isListing ? 'gap-6 md:gap-0' : 'gap-6',
+    'before:pointer-events-none before:absolute before:inset-0 before:z-10 before:rounded-card before:border before:border-rule',
+    'lg:min-h-[var(--card-min)]',
+    tabletWide && 'sm:max-md:col-span-2 sm:max-md:flex-row sm:max-md:gap-0',
+  ]}
+  style={`--card-min:${minHeight}px;--card-img:${imageHeight}px`}
+>
+  {
+    image && (
+      <Image
+        src={image}
+        alt=""
+        widths={isListing ? [680, 1360] : [450, 900]}
+        sizes={isListing ? '(min-width: 1000px) 50vw, 100vw' : '(min-width: 1000px) 33vw, 100vw'}
+        class:list={[media, 'object-cover']}
+      />
+    )
+  }
+  {!image && gradient && <div class:list={[media, 'shrink-0']} style={`background:${gradient}`} aria-hidden="true" />}
+  {/* Listing cards have a fixed height on desktop; their text sits in the middle of the space under the picture. */}
+  <div class:list={['flex flex-1 flex-col gap-4 px-6', isListing ? 'pb-10 pt-6 md:justify-center md:pb-0 md:pt-5' : 'pb-[26px] pt-6']}>
+    <h3 class:list={[isListing ? 'type-heading-24 md:type-heading-48' : 'type-heading-32', category && !image && 'pr-24']}>{title}</h3>
+    <p class="type-body-20">{description}</p>
+    <div class:list={['flex justify-end', isListing ? 'mt-auto md:mt-0' : 'mt-auto']}>
+      {/* As on the old site, the text link is the link, not the whole card. */}
+      <Action href={href}>
+        {actionLabel}
+        <span class="sr-only">: {title}</span>
+      </Action>
+    </div>
+  </div>
+  {
+    category && (
+      <Chip
+        variant="badge"
+        class={`absolute right-[23px] top-[15px] z-10 ${tabletWide ? 'sm:max-md:left-[15px] sm:max-md:right-auto' : ''}`}
+      >
+        {category}
+      </Chip>
+    )
+  }
+</article>

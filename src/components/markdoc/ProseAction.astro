@@ -1,0 +1,13 @@
+---
+/** Markdoc tag {% action %}: a text link with an arrow, set at the right edge of the text column. */
+import Action from '../Action.astro';
+
+interface Props {
+  href: string;
+  label: string;
+}
+
+const { href, label } = Astro.props;
+---
+
+<p class="prose-action not-prose flex justify-end"><Action href={href}>{label}</Action></p>

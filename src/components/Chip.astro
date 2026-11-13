@@ -1,0 +1,49 @@
+---
+/**
+ * Figma: AR / Chip.
+ *   category  coloured label describing content (not interactive)
+ *   badge     yellow label on cards
+ *   filter    selectable pill; outlined by default, filled when aria-pressed="true"
+ * Sizes: "sm" (29px tall) on cards and article headers, "md" (37px) on the news list.
+ */
+interface Props {
+  variant?: 'category' | 'badge' | 'filter';
+  tone?: 'blue' | 'yellow' | 'green';
+  size?: 'sm' | 'md';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { variant = 'category', tone = variant === 'badge' ? 'yellow' : 'blue', size = 'sm', class: className, ...rest } = Astro.props;
+// A filter chip has a 1px border inside its measured size: one pixel less padding all round.
+const padding =
+  variant === 'filter'
+    ? size === 'md'
+      ? 'px-[9px] py-[7px]'
+      : 'px-[7px] py-[3px]'
+    : size === 'md'
+      ? 'px-2.5 py-2'
+      : 'px-2 py-1';
+const base = ['type-label-16 inline-flex items-start whitespace-nowrap rounded-pill font-medium', padding];
+const tones = { blue: 'bg-blue', yellow: 'bg-yellow', green: 'bg-green' };
+---
+
+{
+  variant === 'filter' ? (
+    <button
+      type="button"
+      class:list={[
+        base,
+        'cursor-pointer border border-rule transition-colors hover:bg-yellow aria-pressed:border-brown aria-pressed:bg-brown aria-pressed:text-canvas',
+        className,
+      ]}
+      {...rest}
+    >
+      <slot />
+    </button>
+  ) : (
+    <span class:list={[base, tones[tone], className]} {...rest}>
+      <slot />
+    </span>
+  )
+}

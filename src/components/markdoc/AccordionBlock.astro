@@ -1,0 +1,12 @@
+---
+/** Markdoc tag {% accordion %}: an expandable row in the text column. */
+import Accordion from '../Accordion.astro';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="accordion-block"><Accordion question={title}><slot /></Accordion></div>

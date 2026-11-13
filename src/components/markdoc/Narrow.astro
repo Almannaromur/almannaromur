@@ -1,0 +1,10 @@
+---
+/** Markdoc tag {% narrow width=480 %}![…](…){% /narrow %}: an image shown narrower than the text column. */
+interface Props {
+  width: number;
+}
+
+const { width } = Astro.props;
+---
+
+<div class="prose-narrow" style={`max-width:${width}px`}><slot /></div>
