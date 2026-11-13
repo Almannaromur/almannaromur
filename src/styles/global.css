@@ -279,10 +279,16 @@
     padding: 32px;
     border: 1px solid transparent;
     border-radius: var(--radius-card);
+    /*
+     * Width and max-width both change by the same 48px between the two states and move
+     * together, so the logo and the menu glide sideways (0.3s, as on the old site)
+     * at every window size. Leaving either out makes the bar jump.
+     */
     transition:
+      width 0.3s,
+      max-width 0.3s,
       margin 0.3s,
       padding 0.3s,
-      max-width 0.3s,
       background-color 0.3s,
       border-color 0.3s;
   }
