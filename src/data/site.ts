@@ -10,11 +10,18 @@ export const site = {
     { label: 'LinkedIn', href: 'https://www.linkedin.com/company/almannaromur/' },
   ],
   /**
-   * Newsletter signup. Set `action` to the provider's form endpoint to show the form.
-   * While empty, the signup section is not rendered.
+   * Newsletter signup (Mailchimp). The address is sent to the list from the page itself, so
+   * the visitor stays on the site (see Newsletter.astro). While `action` is empty the button
+   * is disabled.
+   *   action     the list's "subscribe/post" address: the u and id values are in the link to
+   *              the list's signup page in Mailchimp
+   *   emailField the name Mailchimp gives the email field
+   *   trap       a hidden field that people leave empty and spam robots fill in:
+   *              "b_" + u + "_" + id
    */
   newsletter: {
-    action: '',
-    emailField: 'email',
+    action: 'https://almannaromur.us3.list-manage.com/subscribe/post?u=e1dcf5455a885cfc6811b32ad&id=d628b76fe6',
+    emailField: 'EMAIL',
+    trap: 'b_e1dcf5455a885cfc6811b32ad_d628b76fe6',
   },
 } as const;

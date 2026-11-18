@@ -50,6 +50,13 @@ const ui = {
     newsletterHeading: 'Skráðu þig á póstlista',
     newsletterEmail: 'Sláðu inn netfangið þitt',
     newsletterSubmit: 'Skrá mig',
+    // What the signup box says after the address has been sent (Newsletter.astro).
+    newsletterSuccess: 'Takk fyrir skráninguna!',
+    newsletterConfirm: 'Næstum komið! Við sendum þér tölvupóst til að staðfesta skráninguna.',
+    newsletterAlready: 'Þetta netfang er þegar á póstlistanum.',
+    newsletterInvalid: 'Athugaðu netfangið og reyndu aftur.',
+    newsletterTooMany: 'Of margar tilraunir. Reyndu aftur eftir nokkrar mínútur.',
+    newsletterFailed: 'Ekki tókst að skrá netfangið. Reyndu aftur síðar.',
     newsAll: 'Allt',
     newsEmpty: 'Ekkert efni í þessum flokki enn sem komið er.',
     newsBack: 'Til baka í Á döfinni',
@@ -90,6 +97,14 @@ const ui = {
     newsletterHeading: 'Sign up for our newsletter',
     newsletterEmail: 'Enter your email address',
     newsletterSubmit: 'Subscribe',
+    // untranslated: while these are empty, the English page shows the mailing service's own
+    // English message (for example "Thank you for subscribing!").
+    newsletterSuccess: '',
+    newsletterConfirm: '',
+    newsletterAlready: '',
+    newsletterInvalid: '',
+    newsletterTooMany: '',
+    newsletterFailed: '',
     // The news pages exist in Icelandic only, so these four are never shown in English.
     newsAll: 'Allt',
     newsEmpty: 'Ekkert efni í þessum flokki enn sem komið er.',

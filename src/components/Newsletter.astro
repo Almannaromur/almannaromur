@@ -4,8 +4,11 @@
  * Heading top-left, form bottom-right on desktop; stacked on mobile. The
  * email field and button stay on one line at every width.
  *
- * The form posts to the provider endpoint in src/data/site.ts
- * (site.newsletter.action). Until that is set the button is disabled.
+ * The address goes to the Mailchimp list set in src/data/site.ts (site.newsletter).
+ * With JavaScript the page sends it in the background and shows the answer in place of
+ * the field, so the visitor never leaves the site. Without JavaScript, or if that request
+ * cannot be made, the form posts to Mailchimp's own page, which subscribes the same address.
+ * Until an address is set in site.ts the button is disabled.
  */
 import artwork from '../assets/images/ui/newsletter.png';
 import { site } from '../data/site';
@@ -18,8 +21,17 @@ interface Props {
 
 const { locale, heading } = Astro.props;
 const t = useTranslations(locale);
-const { action, emailField } = site.newsletter;
+const { action, emailField, trap } = site.newsletter;
 const fieldId = 'newsletter-email';
+// An empty message means: show the mailing service's own wording (English).
+const messages = {
+  success: t.newsletterSuccess,
+  confirm: t.newsletterConfirm,
+  already: t.newsletterAlready,
+  invalid: t.newsletterInvalid,
+  tooMany: t.newsletterTooMany,
+  failed: t.newsletterFailed,
+};
 ---
 
 <section class="page-frame">
@@ -37,10 +49,12 @@ const fieldId = 'newsletter-email';
       action={action || undefined}
       method="post"
       target="_blank"
+      data-newsletter
+      data-messages={JSON.stringify(messages)}
       class="relative flex w-full flex-col gap-2.5 sm:w-[550px]"
     >
       <label for={fieldId} class="type-heading-24">{t.newsletterHeading}:</label>
-      <div class="flex h-[48.5px] items-stretch gap-2.5">
+      <div class="flex h-[48.5px] items-stretch gap-2.5" data-newsletter-row>
         <input
           id={fieldId}
           type="email"
@@ -58,6 +72,102 @@ const fieldId = 'newsletter-email';
           {t.newsletterSubmit}
         </button>
       </div>
+      {/* People never see this field; spam robots fill it in and Mailchimp then ignores the signup. */}
+      {
+        trap && (
+          <div class="absolute -left-[5000px]" aria-hidden="true">
+            <input type="text" name={trap} tabindex="-1" value="" autocomplete="off" />
+          </div>
+        )
+      }
+      {/* The answer: in place of the field after a signup, under it when something needs correcting. */}
+      <p class="type-label-16 font-medium" role="status" aria-live="polite" data-newsletter-status hidden></p>
     </form>
   </div>
 </section>
+
+<script>
+  type Kind = 'success' | 'confirm' | 'already' | 'invalid' | 'tooMany' | 'failed';
+  type Answer = { result?: string; msg?: string };
+
+  /** Mailchimp answers in English sentences; this sorts them into the cases the page has wording for. */
+  function kindOf(answer: Answer): Kind {
+    const msg = answer.msg ?? '';
+    if (/already subscribed/i.test(msg)) return 'already';
+    if (answer.result === 'success') return /confirm/i.test(msg) ? 'confirm' : 'success';
+    if (/too many/i.test(msg)) return 'tooMany';
+    if (/invalid|must contain|enter a value|different email|cannot be added/i.test(msg)) return 'invalid';
+    return 'failed';
+  }
+  /** Mailchimp's own sentence without its error number and trailing link. */
+  const plain = (msg = '') =>
+    msg
+      .replace(/^\d+\s*-\s*/, '')
+      .replace(/<a[\s\S]*$/i, '')
+      .replace(/<[^>]+>/g, '')
+      .trim();
+
+  for (const form of document.querySelectorAll<HTMLFormElement>('form[data-newsletter]')) {
+    const endpoint = form.getAttribute('action') ?? '';
+    const row = form.querySelector<HTMLElement>('[data-newsletter-row]');
+    const status = form.querySelector<HTMLElement>('[data-newsletter-status]');
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    // Only Mailchimp offers the in-page route; any other address keeps the plain form.
+    if (!row || !status || !button || !endpoint.includes('/subscribe/post?')) continue;
+    const messages = JSON.parse(form.dataset.messages ?? '{}') as Record<Kind, string>;
+    let sending = false;
+
+    const show = (answer: Answer) => {
+      const kind = kindOf(answer);
+      status.textContent = messages[kind] || plain(answer.msg);
+      status.hidden = false;
+      // Signed up (or already on the list): the message takes the field's place.
+      const done = kind === 'success' || kind === 'confirm' || kind === 'already';
+      row.hidden = done;
+      status.classList.toggle('type-heading-24', done);
+      status.classList.toggle('flex', done);
+      status.classList.toggle('min-h-[48.5px]', done);
+      status.classList.toggle('items-center', done);
+    };
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (sending) return;
+      sending = true;
+      button.disabled = true;
+      status.hidden = true;
+
+      const callback = `newsletterAnswer${Date.now()}`;
+      const params = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+      params.set('c', callback);
+      const script = document.createElement('script');
+      const store = window as unknown as Record<string, unknown>;
+      let settled = false;
+      const finish = () => {
+        settled = true;
+        window.clearTimeout(timer);
+        script.remove();
+        delete store[callback];
+        sending = false;
+        button.disabled = false;
+      };
+      // The request could not be made (offline, or a blocker stops it): hand the address to
+      // Mailchimp's own page instead, in this tab, so the signup still goes through.
+      const fallback = () => {
+        if (settled) return;
+        finish();
+        form.target = '_self';
+        form.submit();
+      };
+      const timer = window.setTimeout(fallback, 8000);
+      store[callback] = (answer: Answer) => {
+        if (settled) return;
+        finish();
+        show(answer);
+      };
+      script.onerror = fallback;
+      script.src = `${endpoint.replace('/subscribe/post?', '/subscribe/post-json?')}&${params}`;
+      document.head.append(script);
+    });
+  }
+</script>
