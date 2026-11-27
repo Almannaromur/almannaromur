@@ -72,11 +72,13 @@ export const home: Record<Locale, HomeContent> = {
     newsHeading: 'Á döfinni',
     newsletterHeading: 'Viltu vita meira um okkur?',
     faqHeading: 'Algengar spurningar',
+    // The old site showed another wording of three of these answers on phones and tablets.
+    // This is its desktop wording, which the English translation follows.
     faq: [
       {
         question: 'Hvað er Almannarómur?',
         answer: [
-          'Almannarómur er miðstöð gervigreindar og máltækni, stofnuð 2014. Almannarómur, sem er óháð sjálfseignastofnun, er fjármögnuð af rekstrarsamningi við menningar-, nýsköpunar og háskólaráðuneytið og með styrkjum tengdum Evrópuverkefnum. Miðstöðin heldur um framkvæmd máltækniáætlunar en sinnir einnig fjölbreyttum verkefnum sem snúa að stuðningi við ábyrga þróun og hagnýtingu gervigreindar og máltækni á Íslandi.',
+          'Almannarómur er miðstöð gervigreindar og máltækni, stofnuð 2014. Almannarómur, sem er óháð sjálfseignastofnun, er fjármögnuð af fjárlögum og með styrkjum tengdum Evrópuverkefnum. Miðstöðin ber m.a. ábyrgð á að framkvæma máltækniáætlun en kemur einnig að uppbyggingu gervigreindarinnviða, nýsköpun og stuðning við atvinnulífið við innleiðingu og hagnýtingu gervigreindar.',
         ],
       },
       {
@@ -88,14 +90,14 @@ export const home: Record<Locale, HomeContent> = {
       {
         question: 'Fyrir hvern er Almannarómur?',
         answer: [
-          'Almannarómur er fyrir samfélagið í heild sinni, en miðstöðin leggur megináherslu á stuðning við innviðauppbyggingu og framþróun í nýsköpun á sviði máltækni og gervigreindar. Sérstakur hagaðili Almannaróms er samfélag fatlaðra en þar eru margir ofurnotendur máltæknilausna. Einnig vinnur Almannarómur þétt með háskólunum, nýsköpunarsamfélaginu og atvinnulífinu.',
+          'Almannarómur er fyrir samfélagið í heild sinni, en miðstöðin leggur megináherslu á stuðning við innviðauppbyggingu og framþróun í nýsköpun á sviði máltækni og gervigreindar. Sérstakur hagaðili eru fatlaðir sem er einn mikilvægasti notendahópur máltæknilausna en einnig vinnur Almannarómur þétt með háskólunum, nýsköpunarsamfélaginu og atvinnulífinu.',
         ],
       },
       {
         question: 'Hvað eru máltæknilausnir?',
         answer: [
           'Máltæknilausnir eru stafrænar lausnir sem vinna með mannlegt mál. Þær byggja á máltækni (language technology / natural language processing, NLP) og eru notaðar til að skilja, greina, þýða, mynda eða vinna úr texta og máli.',
-          'Dæmi um máltæknilausnir:',
+          'Týpur máltæknilausna:',
         ],
         list: [
           'Þýðingarvélar – sjálfvirk þýðing á milli tungumála (t.d. Google Translate, DeepL)',
@@ -103,12 +105,13 @@ export const home: Record<Locale, HomeContent> = {
           'Talgreinar (speech recognition / ASR) – breyta tali í texta',
           'Spjallbottar og stór tungumálalíkön – t.d. ChatGPT, Claude',
           'Leitarvélar – skilja fyrirspurnir á náttúrulegu máli',
-          'Málrýnar – stafsetningar- og málfræðiprófar',
+          'Málprófar og rithjálp – stafsetningar- og málfræðiprófar',
           'Textagreining – t.d. tilfinningagreining, flokkun texta, upplýsingavinnsla',
           'Samantektarkerfi – draga saman langan texta',
+          'Stafrænar ritarar/hjálparforrit – sérstaklega þróaðar fyrir minni tungumál eins og íslensku',
         ],
         after: [
-          'Í íslenska samhenginu er þetta sérstaklega viðeigandi vegna þess að íslenska er tungumál sem fáir tala á heimsvísu og því þarf að tryggja stafræna innviði og lausnir svo íslenska eigi sér öruggan stað í allri tækni.',
+          'Í íslenska samhenginu er þetta sérstaklega viðeigandi vegna þess að íslenska er lítið tungumál og þarfnast sérstakar máltæknilausnir til að verða ekki útundan í þróun gervigreindar og stafrænnar tækni.',
         ],
       },
     ],
