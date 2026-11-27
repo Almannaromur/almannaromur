@@ -36,10 +36,12 @@ export const home: Record<Locale, HomeContent> = {
     },
     featuredHeading: 'Verkefni',
     featured: [
+      // The live site's card since 16 November 2026; it leads to Íslenska í erlendum lausnum.
+      // The English homepage keeps "Icelandic in Technology" until this card is translated.
       {
-        slug: 'maltaekni',
-        title: 'Íslenska í tækni',
-        text: 'Allar helstu tæknilausnir eiga að vera aðgengilegar á góðri íslensku. Almannarómur vinnur að því að fjölga tæknilausnum sem virka vel á íslensku ásamt góðum þjálfunargögnum og hugbúnaði fyrir íslensku í tækni.',
+        slug: 'islenska',
+        title: 'Skorum á Apple',
+        text: 'Almannarómur og Íslandsstofa í samstarfi við menningar-nýsköpunar og háskólaráðuneyti skora á Apple að innleiða íslensku í allar sínar lausnir. Það er nánast eins auðvelt og að ýta á takka. Skrifaðu undir og taktu þátt í átakinu.',
       },
       {
         slug: 'new-nordics',

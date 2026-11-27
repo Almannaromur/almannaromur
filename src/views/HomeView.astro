@@ -1,6 +1,7 @@
 ---
 /** Figma: 03 · Desktop screens / 01 Home and 04 · Mobile screens / Home. */
 import technologyImage from '../assets/images/pages/islenska-i-taekni.png';
+import newNordicsImage from '../assets/images/pages/new-nordics-card.png';
 import reportImage from '../assets/images/pages/stada-gervigreindar.png';
 import Accordion from '../components/Accordion.astro';
 import Action from '../components/Action.astro';
@@ -25,7 +26,7 @@ const t = useTranslations(locale);
 const c = home[locale];
 
 // Homepage cards can use their own artwork instead of the project's image.
-const cardImages: Record<string, ImageMetadata> = { maltaekni: technologyImage };
+const cardImages: Record<string, ImageMetadata> = { maltaekni: technologyImage, 'new-nordics': newNordicsImage };
 
 // Three feature cards: the report, then the two featured projects.
 const projects = await getProjects(locale);
