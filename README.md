@@ -76,6 +76,8 @@ Besides text, headings, lists, images and tables, the article editor offers thes
 
 Fields beside the text: "Ábending við hlið greinar" (yellow box, with an optional link) and "Texti í ramma" (bold text in a bordered box) sit to the left of the text on desktop. "Brennipunktur myndar" sets which part of the cover stays visible when it is cropped.
 
+The news page lists ten items; "Sjá fleiri fréttir" shows ten more each time, within the chosen category (`PAGE_SIZE` in `src/pages/a-dofinni/index.astro`). Without JavaScript every item is listed.
+
 `npm run check:content` validates every article and project page against the block definitions and reports anything that would not render. Run it after editing `.mdoc` files by hand. The dev server reads the block definitions (`markdoc.config.mjs`) and the content fields (`src/content.config.ts`) only when it starts: restart `astro dev` after changing either, or pages using a new block fail with "Undefined tag".
 
 An empty-looking paragraph that holds a non-breaking space (`&nbsp;`) is a deliberate gap carried over from the old site.
