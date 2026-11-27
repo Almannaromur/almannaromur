@@ -46,7 +46,7 @@ A link to another website opens in a new tab; a link within the site stays in th
 
 ## Old addresses
 
-Addresses of the old Framer site that changed are redirected (`src/data/redirects.json`); most of them held Icelandic letters and now use plain ones. `scripts/old-urls.json` lists every address the old site had on 13 November 2026 (its sitemap and every internal link).
+Addresses of the old Framer site that changed are redirected (`src/data/redirects.json`); most of them held Icelandic letters and now use plain ones. `scripts/old-urls.json` lists every address the old site had on 27 November 2026 (its sitemap and every internal link).
 
 ```sh
 npm run build && npm run check:redirects                       # checks the build output
