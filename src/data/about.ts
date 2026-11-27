@@ -130,7 +130,7 @@ export const about: Record<Locale, AboutContent> = {
     role: {
       heading: 'Our mission',
       paragraphs: [
-        'Almannarómur is an independent non-profit foundation that helps Icelandic society make full use of AI and language technology on its own terms, starting with making sure Icelandic works in the tools people rely on. We bring together government, academia, business, and international partners, remove barriers to developing and using AI and language technology, and, in doing so, promote their responsible, beneficial, and widespread use across society.',
+        'Almannarómur is an independent non-profit foundation that helps Icelandic society make full use of AI and language technology on its own terms, starting with making sure Icelandic works in the tools people rely on. We bring together government, academia, business, and international partners to remove barriers to developing and using AI and language technology and, in doing so, promote their responsible, beneficial, and widespread use across society.',
         'In this way, Iceland shows that a small language community can lead the AI revolution on its own terms, with solutions that support innovation, value creation, and a better quality of life.',
       ],
     },
@@ -167,7 +167,7 @@ export const about: Record<Locale, AboutContent> = {
     },
     founders: {
       heading: 'Founders',
-      text: 'Almannarómur was founded in 2014 to ensure that Icelandic stands on an equal footing with other languages in the world of technology.',
+      text: 'Almannarómur was founded in 2014 to ensure that Icelandic stands on an equal footing with other languages in the technology world.',
       imageAlt: 'Merki stofnaðila Almannaróms',
     },
     staffHeading: 'Our team',
@@ -186,7 +186,7 @@ export const about: Record<Locale, AboutContent> = {
       paragraphs: [
         "We are responsible for making sure the outputs of the government's Language Technology Programmes fully meet the needs of entrepreneurs, companies, institutions, and individuals building technology that works in Icelandic.",
         'To that end, we have assembled an advisory board of respected international language technology experts: Bente Maegaard, Kadri Vider, and Steven Krauwer.',
-        "The advisory board advises the Language Technology Programme's steering committee on the technical design of core projects, reviewing the technical specifications and progress reports of every project of the programs in detail.",
+        "The advisory board advises the Language Technology Programme's steering committee on the technical design of core projects, reviewing the technical specifications and progress reports of every project in the programs in detail.",
         'Read more about the advisory board members:',
       ],
       members: [
@@ -200,7 +200,7 @@ export const about: Record<Locale, AboutContent> = {
         },
         {
           name: 'Steven Krauwer',
-          bio: "Steven Krauwer is an emeritus at Utrecht University in the Netherlands. He studied mathematics and general linguistics in Utrecht and Copenhagen. He taught and worked as a specialist in mathematical and computational linguistics at Utrecht University's Institute of Linguistics until he retired in 2011. Steven led and took part in many EU projects, mainly in machine translation and other areas of language and speech technology. He has served on the committee of the Foundation for Endangered Languages since 2005. After leaving Utrecht University, he became the first Executive Director of CLARIN ERIC, the central body of CLARIN (Common Language Resources and Technology Infrastructure). When that role ended in 2015, Steven became an adviser to CLARIN's Board of Directors.",
+          bio: "Steven Krauwer is an emeritus professor at Utrecht University in the Netherlands. He studied mathematics and general linguistics in Utrecht and Copenhagen. He taught and worked as a specialist in mathematical and computational linguistics at Utrecht University's Institute of Linguistics until he retired in 2011. Steven led and took part in many EU projects, mainly in machine translation and other areas of language and speech technology. He has served on the committee of the Foundation for Endangered Languages since 2005. After leaving Utrecht University, he became the first Executive Director of CLARIN ERIC, the central body of CLARIN (Common Language Resources and Technology Infrastructure). When that role ended in 2015, Steven became an adviser to CLARIN's Board of Directors.",
         },
       ],
     },

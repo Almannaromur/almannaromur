@@ -172,7 +172,7 @@ export const home: Record<Locale, HomeContent> = {
       {
         question: 'Why AI?',
         answer: [
-          'We were founded in 2014 to make sure language technology solutions would be built for Icelandic. Large language models such as ChatGPT, Claude, and Gemini are built on language technology, and since they arrived, our AI work has grown considerably. Society now needs far more AI support and infrastructure, so we have broadened our role and now work across both fields.',
+          'We were founded in 2014 to ensure language technology solutions are built for Icelandic. Large language models such as ChatGPT, Claude, and Gemini are built on language technology, and since they arrived, our AI work has grown considerably. Society now needs far more AI support and infrastructure, so we have broadened our role and now work across both fields.',
         ],
       },
       {
