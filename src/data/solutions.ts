@@ -201,7 +201,7 @@ export const solutions: Record<Locale, SolutionsContent> = {
       },
       {
         heading: 'Data',
-        text: 'The Language Technology Programme has built extensive infrastructure for Icelandic language technology and AI. A huge amount of Icelandic data has been collected, and a range of software for Icelandic has been developed, including machine translation, speech to text, text to speech, and spelling and grammar checkers. All of this infrastructure has been released under open licenses, so anyone can use it in their own software development or to improve how well their own solutions handle Icelandic.',
+        text: 'The Language Technology Programme has built extensive infrastructure for Icelandic language technology and AI. A large amount of Icelandic data has been collected, and a range of Icelandic software has been developed, including machine translation, speech-to-text, text-to-speech, and spelling and grammar checkers. All of this infrastructure has been released under open licenses, so anyone can use it in their own software development or to improve how well their own solutions handle Icelandic.',
       },
     ],
     resources: [
@@ -231,7 +231,7 @@ export const solutions: Record<Locale, SolutionsContent> = {
     },
     supportProjects: ['skerfur', 'kveikja', 'glod'],
     supportText: {
-      glod: 'Glóð offers expertise in AI and supercomputing, Icelandic datasets, and a shared workspace at Gróska. The team is made up of six member organizations, each taking on a service and support role.',
+      glod: 'Glóð offers expertise in AI and supercomputing, Icelandic datasets, and a shared workspace at Gróska. The team comprises six member organizations, each taking on a service and support role.',
     },
   },
 };

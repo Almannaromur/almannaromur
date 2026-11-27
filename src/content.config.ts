@@ -54,6 +54,8 @@ const projects = defineCollection({
       intro: z.string().optional(),
       /** Wide image under the headline. Defaults to the card image. */
       heroImage: image().optional(),
+      /** `contain` shows the whole wide image instead of filling the frame and cropping it. */
+      heroFit: z.enum(['cover', 'contain']).optional(),
       /** CSS background behind the hero image, when the image is a cut-out. */
       heroBackground: z.string().optional(),
     }),

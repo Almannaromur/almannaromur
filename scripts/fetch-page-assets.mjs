@@ -17,6 +17,8 @@ const FILES = [
   // Homepage and about
   ['Qklg4Rxw3i41tndPWe6DuGMEEw.png', 4096, 'pages/home-hero.png'],
   ['TSflk9yGQFxR5eV4Wl2DJnh2Ls.png', 744, 'pages/stada-gervigreindar.png'],
+  // The homepage's New Nordics AI card shows a closer crop than the project's own card
+  ['e9ZRRs0OKCDO90xbsbMvr5fpwAs.png', 2193, 'pages/new-nordics-card.png'],
   ['p2L1QtnvCx8TSVTvuBSBoDh441E.png', 2752, 'pages/stofnadilar.png'],
 
   ['6UA9mBw3SjYyJ5xfzJF9skzw00.png', 2750, 'pages/lausnir-hero.png'],
@@ -34,6 +36,8 @@ const FILES = [
   ['K31CSk1WYNxpBsbnWvpVqR3v14.png', 2704, 'projects/skerfur.png'],
   ['y6xBhShUMcOz13BYpfqCMc2Bkew.png', 1280, 'projects/unesco.png'],
   ['qgk554wi5TMsaGH8C3RNbyv4.png', 3840, 'projects/islenska.png'],
+  // "Skorum á Apple" (from 16 November 2026): the card for Íslenska í erlendum lausnum
+  ['3nvr8QGKh4SCQ15faQxBYWjh4.jpg', 1280, 'projects/islenska-apple.jpg'],
 
   // Project pages: wide image under the hero
   ['4yMWX0mx4ZN7R0ggHhAcHLIXU80.png', 1920, 'projects/kveikja-hero.png'],
@@ -43,6 +47,8 @@ const FILES = [
   ['Yils5s9hcAJI4gRetkzpWLxzF5I.png', 2752, 'projects/skerfur-hero.png'],
   ['jSDsHVE0LeDzbOOLnYzt84MmmE.png', 1295, 'projects/unesco-hero.png'],
   ['f3MK6AKyfpS37Y9Tft6IXB1mbOA.png', 2752, 'projects/islenska-hero.png'],
+  // "Hey Siri. Skilur þú íslensku?": shown whole, not cropped, under that page's headline
+  ['mzo4rYJ2wfMLxGRjsx8KEIuttqc.jpg', 2000, 'projects/islenska-apple-hero.jpg'],
 
   // Project pages: images inside the content
   ['EEziUzKcXsNjEHEQFVWFuS7ozGY.png', 2704, 'projects/glod-framtidarsyn.png'],

@@ -59,6 +59,7 @@ const ui = {
     newsletterFailed: 'Ekki tókst að skrá netfangið. Reyndu aftur síðar.',
     newsAll: 'Allt',
     newsEmpty: 'Ekkert efni í þessum flokki enn sem komið er.',
+    newsMore: 'Sjá fleiri fréttir',
     newsBack: 'Til baka í Á döfinni',
     moreNews: 'Fleira á döfinni',
     notFoundTitle: 'Síða fannst ekki',
@@ -105,9 +106,10 @@ const ui = {
     newsletterInvalid: '',
     newsletterTooMany: '',
     newsletterFailed: '',
-    // The news pages exist in Icelandic only, so these four are never shown in English.
+    // The news pages exist in Icelandic only, so these five are never shown in English.
     newsAll: 'Allt',
     newsEmpty: 'Ekkert efni í þessum flokki enn sem komið er.',
+    newsMore: 'Sjá fleiri fréttir',
     newsBack: 'Til baka í Á döfinni',
     moreNews: 'Fleira á döfinni',
     notFoundTitle: 'Síða fannst ekki', // untranslated

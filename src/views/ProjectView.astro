@@ -19,7 +19,7 @@ interface Props {
 }
 
 const { locale, project } = Astro.props;
-const { title, summary, image, heroLines, intro, heroImage, heroBackground } = project.entry.data;
+const { title, summary, image, heroLines, intro, heroImage, heroBackground, heroFit } = project.entry.data;
 const { Content } = await render(project.entry);
 const wideImage = heroImage ?? image;
 
@@ -62,7 +62,11 @@ const hasAlternate = (await getProjectSlugs(other)).has(project.slug);
               widths={[750, 1400, 2048]}
               sizes="(min-width: 1440px) 1376px, 100vw"
               loading="eager"
-              class:list={heroBackground ? 'h-[103%] w-auto max-w-none' : 'size-full object-cover'}
+              class:list={
+                heroBackground
+                  ? 'h-[103%] w-auto max-w-none'
+                  : ['size-full', heroFit === 'contain' ? 'object-contain' : 'object-cover']
+              }
             />
           </div>
         </div>

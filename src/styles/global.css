@@ -665,7 +665,7 @@
   .prose-article > article > :is(p, blockquote, table) {
     margin-top: 20px;
   }
-  .prose-article > article > :is(h2, h3, h4) {
+  .prose-article > article > :is(h2, h3, h4, h6) {
     margin-top: 40px;
   }
   .prose-article > article > h3 {
@@ -697,6 +697,15 @@
     font-size: 1.375rem;
     line-height: 1.4;
     font-weight: 700;
+  }
+  /* The old site's small label heading, used for the items of a programme in older articles. */
+  .prose-article h6 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    hyphens: manual;
   }
   .prose-article strong {
     font-weight: 700;

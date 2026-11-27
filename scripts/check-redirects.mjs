@@ -6,7 +6,7 @@
  *   npm run check:redirects -- https://example.com    checks a deployed site over the network
  *
  * The old addresses are in scripts/old-urls.json: the old site's sitemap plus every internal
- * link on its pages, collected on 13 November 2026. Redirects are defined in src/data/redirects.json.
+ * link on its pages, collected on 27 November 2026. Redirects are defined in src/data/redirects.json.
  */
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';

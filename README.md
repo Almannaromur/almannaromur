@@ -46,7 +46,7 @@ A link to another website opens in a new tab; a link within the site stays in th
 
 ## Old addresses
 
-Addresses of the old Framer site that changed are redirected (`src/data/redirects.json`); most of them held Icelandic letters and now use plain ones. `scripts/old-urls.json` lists every address the old site had on 13 November 2026 (its sitemap and every internal link).
+Addresses of the old Framer site that changed are redirected (`src/data/redirects.json`); most of them held Icelandic letters and now use plain ones. `scripts/old-urls.json` lists every address the old site had on 27 November 2026 (its sitemap and every internal link).
 
 ```sh
 npm run build && npm run check:redirects                       # checks the build output
@@ -75,6 +75,8 @@ Besides text, headings, lists, images and tables, the article editor offers thes
 | Línubil í fyrirsögn | A line break inside a heading |
 
 Fields beside the text: "Ábending við hlið greinar" (yellow box, with an optional link) and "Texti í ramma" (bold text in a bordered box) sit to the left of the text on desktop. "Brennipunktur myndar" sets which part of the cover stays visible when it is cropped.
+
+The news page lists ten items; "Sjá fleiri fréttir" shows ten more each time, within the chosen category (`PAGE_SIZE` in `src/pages/a-dofinni/index.astro`). Without JavaScript every item is listed.
 
 `npm run check:content` validates every article and project page against the block definitions and reports anything that would not render. Run it after editing `.mdoc` files by hand. The dev server reads the block definitions (`markdoc.config.mjs`) and the content fields (`src/content.config.ts`) only when it starts: restart `astro dev` after changing either, or pages using a new block fail with "Undefined tag".
 
